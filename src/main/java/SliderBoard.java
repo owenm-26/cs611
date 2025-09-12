@@ -52,8 +52,8 @@ public class SliderBoard extends Board{
         missing_tile[0] = x; missing_tile[1] = y;
     }
 
-    public HashMap<String, Integer[]> getEligibleSwapCharacters(){
-        HashMap<String, Integer[]> neighbors_keys = new HashMap<String, Integer[]>();
+    public HashMap<String, int[]> getEligibleSwapCharacters(){
+        HashMap<String, int[]> neighbors_keys = new HashMap<String, int[]>();
 
         int[][] DIRECTIONS = {
                 { 1, 0 },  // Right
@@ -68,7 +68,7 @@ public class SliderBoard extends Board{
 
             // Check boundaries
             if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                Integer[] coordinates = new Integer[2];
+                int[] coordinates = new int[2];
                 coordinates[0] = nx; coordinates[1] = ny;
                 neighbors_keys.put(board_arr[nx][ny].getContent(), coordinates);
             }
@@ -78,12 +78,12 @@ public class SliderBoard extends Board{
     }
 
     public void swap_tiles(String key_to_swap_with){
-        HashMap<String, Integer[]> valid_swap_tiles = getEligibleSwapCharacters();
+        HashMap<String, int[]> valid_swap_tiles = getEligibleSwapCharacters();
 
         if (!valid_swap_tiles.containsKey(key_to_swap_with)){
             throw new IllegalArgumentException("Not an eligible key to swap with. Must be up, left, right, or down of the empty space in order to swap.");
         }
-        Integer[] to_be_swapped_coordinates = valid_swap_tiles.get(key_to_swap_with);
+        int[] to_be_swapped_coordinates = valid_swap_tiles.get(key_to_swap_with);
 
         // Swap the contents of the tiles
         String temp_content = board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getContent();
@@ -91,7 +91,6 @@ public class SliderBoard extends Board{
         board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].setContent(" ");
 
         // Update missing tile to be the coordinates of the new empty tile
-        missing_tile[0] = to_be_swapped_coordinates[0];
-        missing_tile[1] = to_be_swapped_coordinates[1];
+        setMissingTile(to_be_swapped_coordinates[0], to_be_swapped_coordinates[1]);
     }
 }
