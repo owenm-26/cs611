@@ -35,8 +35,8 @@ public abstract class Board {
     }
 
     protected boolean valid_position(int x, int y){
-        boolean width_valid = x > 0 && x < this.width;
-        boolean height_valid = y > 0 && y < this.height;
+        boolean width_valid = x >= 0 && x < this.width;
+        boolean height_valid = y >= 0 && y < this.height;
 
         return width_valid && height_valid;
     }
