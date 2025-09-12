@@ -1,8 +1,9 @@
-import javax.lang.model.type.NullType;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.Scanner;
 
-public class Game {
+
+public abstract class Game {
     //TODO: Add to this enum everytime you add a new "Board" child
     public enum GameType {
         SLIDER
@@ -10,31 +11,27 @@ public class Game {
     public Board gameboard;
     public int board_width;
     public int board_height;
+    public static Scanner scanner = new Scanner(System.in);
 
-    public Game(String gameType, int width, int height){
-        GameType type = validateGameType(gameType);
+
+    public Game(int width, int height){
         board_width = width;
         board_height = height;
-
-        // convert string input into gametype
-        switch (type) {
-            case SLIDER:
-                this.gameboard = new SliderBoard(width, height);
-                break;
-            default:
-                throw new IllegalArgumentException(getInvalidGameTypeMessage());
-        }
-
-        gameboard.printCurrentBoard();
     }
 
-    public GameType validateGameType(String gameType){
-        try {
-            return GameType.valueOf(gameType.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(getInvalidGameTypeMessage());
-        }
-    }
+    protected abstract void initializeGame();
+
+    protected abstract void welcome();
+
+    protected abstract void getPlayerInfo();
+
+    protected abstract void playGame();
+
+    protected abstract void executeNextMove(int x, int y);
+
+    protected abstract boolean checkWin();
+
+    protected abstract void endGame();
 
     public String getInvalidGameTypeMessage(){
         String options = Arrays.stream(GameType.values())
@@ -42,12 +39,6 @@ public class Game {
                 .collect(Collectors.joining(", "));
 
         return String.format("That game does not exist, try one of the existing ones: %s", options);
-    }
-
-
-    public static void main(String []args) {
-        System.out.println("Starting a new game...");
-        Game game = new Game("slider", 3,3);
     }
 
 }
