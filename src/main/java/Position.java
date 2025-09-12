@@ -13,4 +13,8 @@ public class Position {
         return this.content;
     }
 
+    public void setContent(String s){
+        content = s;
+    }
+
 }

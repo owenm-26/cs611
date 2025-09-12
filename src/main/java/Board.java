@@ -10,35 +10,13 @@ public class Board {
     public HashMap<String, int[]> positions_map;
 
     public Board(int h, int w){
-        if (!(valid_dimension(h) && valid_dimension(w))){
-            throw new InvalidParameterException("Dimensions must be greater that 1");
+        if (!(valid_dimension(w,h))){
+            throw new InvalidParameterException(getInvalidDimensionMessage());
         }
         height = h;
         width = w;
         board_arr = new Position[w][h];
         positions_map = new HashMap<String, int[]>();
-
-//        Populate board_arr and position_map
-        int count = 1;
-        for(int i=0; i<w; i++){
-            for(int j=0; j<h; j++){
-                String content;
-                // TODO: Don't hardcode the last to be empty
-                // Make the last square empty
-                if (i==w-1 && j==h-1) {
-                    content = " ";
-                }
-                else{
-                    content = Integer.toString(count);
-                }
-
-                int[] coordinates = new int[2];
-                coordinates[0] = i; coordinates[1] =j;
-                board_arr[i][j] = new Position(content);
-                positions_map.put(content, coordinates);
-                count++;
-            }
-        }
     }
 
     public Board(int d){
@@ -48,8 +26,15 @@ public class Board {
         this(2,2);
     }
 
-    private static boolean valid_dimension(int d){
-        return d > 1;
+    protected boolean valid_dimension(int w, int h){
+       return w > 1 &&  h > 1;
+    }
+
+    protected boolean valid_position(int x, int y){
+        boolean width_valid = x > 0 && x < this.width;
+        boolean height_valid = y > 0 && y < this.height;
+
+        return width_valid && height_valid;
     }
 
     public int getHeight(){
@@ -60,9 +45,17 @@ public class Board {
         return this.width;
     }
 
-    public String getSquareContent(int x, int y){
-        if (this.width >= x || this.height >= y){
-            throw new IndexOutOfBoundsException("Tried to Access a position out of bounds");
+    protected String getInvalidDimensionMessage() {
+        return "Dimensions must be greater than 1 and within the size of the board";
+    }
+
+    protected String getInvalidPositionMessage() {
+        return String.format("Position must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d", this.width, this.height);
+    }
+
+    public String getSquareContent(int x, int y) {
+        if (!valid_position(x, y)) {
+            throw new IndexOutOfBoundsException(getInvalidPositionMessage());
         }
         return this.board_arr[x][y].getContent();
     }
