@@ -13,33 +13,28 @@ public class SliderBoard extends Board{
         missing_tile = new int[2];
         missing_tile[0] = x; missing_tile[1] = y;
 
-        // Populate board_arr and position_map
-        int count = 1;
-        for(int i=0; i<w; i++){
-            for(int j=0; j<h; j++){
-                String content;
-                if (i == missing_tile[0] && j == missing_tile[1]){
-                    content = " ";
-                }
-                else{
-                    content = Integer.toString(count);
-                    count++;
-                }
-
-                int[] coordinates = new int[2];
-                coordinates[0] = i; coordinates[1] =j;
-
-                board_arr[i][j] = new Position(content);
-                positions_map.put(content, coordinates);
-
-            }
-        }
+        populateBoard();
     }
     public SliderBoard(int w, int h){
         this(w,h,w-1,h-1);
     }
     public SliderBoard(){
         this(2,2);
+    }
+
+    @Override
+    protected void populateBoard() {
+        int count = 1;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                String content = (col == missing_tile[0] && row == missing_tile[1])
+                        ? " "
+                        : Integer.toString(count++);
+                int[] coordinates = {col, row};
+                board_arr[row][col] = new Position(content);
+                positions_map.put(content, coordinates);
+            }
+        }
     }
 
     public void setMissingTile(int x, int y){

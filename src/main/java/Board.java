@@ -2,14 +2,14 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 
-public class Board {
+public abstract class Board {
     public int height;
     public int width;
 
     public Position[][] board_arr;
     public HashMap<String, int[]> positions_map;
 
-    public Board(int h, int w){
+    public Board(int w, int h){
         if (!(valid_dimension(w,h))){
             throw new InvalidParameterException(getInvalidDimensionMessage());
         }
@@ -25,6 +25,10 @@ public class Board {
     public Board(){
         this(2,2);
     }
+
+    // Abstract Method implemented by each subclass to populate board values
+    protected abstract void populateBoard();
+
 
     protected boolean valid_dimension(int w, int h){
        return w > 1 &&  h > 1;
@@ -62,11 +66,11 @@ public class Board {
         }
         String horizontal = builder.toString();
 
-        for(int i=0; i<board_arr.length; i++){
+        for(int row=0; row<board_arr.length; row++){
             System.out.println(horizontal); // print a horizontal above
             System.out.print("|"); // The leftmost vertical bar
-            for(int j=0; j < board_arr[0].length; j++){
-                String current_square = String.format("%s |", board_arr[i][j].getContent());
+            for(int col=0; col < board_arr[0].length; col++){
+                String current_square = String.format("%s |", board_arr[row][col].getContent());
                 System.out.print(current_square);
             }
             System.out.println(); // start new line

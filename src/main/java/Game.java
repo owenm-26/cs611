@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class Game {
-
+    //TODO: Add to this enum everytime you add a new "Board" child
     public enum GameType {
         SLIDER
     }
