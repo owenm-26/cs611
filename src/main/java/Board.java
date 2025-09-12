@@ -49,13 +49,35 @@ public class Board {
         return "Dimensions must be greater than 1 and within the size of the board";
     }
 
-    protected String getInvalidPositionMessage() {
-        return String.format("Position must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d", this.width, this.height);
+    protected String getInvalidPositionMessage(int x, int y) {
+        return String.format("Position must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d. You gave positions (%d, %d)", this.width, this.height,x,y);
+    }
+
+    public void printCurrentBoard(){
+        // Build the horizontal delimiting string
+        StringBuilder builder = new StringBuilder();
+        builder.append("+");
+        for(int k = 0; k<board_arr.length; k++){
+            builder.append("--+");
+        }
+        String horizontal = builder.toString();
+
+        for(int i=0; i<board_arr.length; i++){
+            System.out.println(horizontal); // print a horizontal above
+            System.out.print("|"); // The leftmost vertical bar
+            for(int j=0; j < board_arr[0].length; j++){
+                String current_square = String.format("%s |", board_arr[i][j].getContent());
+                System.out.print(current_square);
+            }
+            System.out.println(); // start new line
+        }
+        System.out.println(horizontal); // the bottom horizontal
+
     }
 
     public String getSquareContent(int x, int y) {
         if (!valid_position(x, y)) {
-            throw new IndexOutOfBoundsException(getInvalidPositionMessage());
+            throw new IndexOutOfBoundsException(getInvalidPositionMessage(x,y));
         }
         return this.board_arr[x][y].getContent();
     }

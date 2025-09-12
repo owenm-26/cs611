@@ -4,12 +4,10 @@ import java.util.HashMap;
 public class SliderBoard extends Board{
     public int[] missing_tile;
     public SliderBoard(int w, int h, int x, int y){
-        super();
-        if (!valid_dimension(w,h)){
-            throw new IllegalArgumentException(getInvalidDimensionMessage());
-        }
+        super(w,h);
+
         if (!valid_position(x,y)){
-            throw new IllegalArgumentException(getInvalidPositionMessage());
+            throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
         }
 
         missing_tile = new int[2];
@@ -38,7 +36,7 @@ public class SliderBoard extends Board{
         }
     }
     public SliderBoard(int w, int h){
-        this(w,h,1,1);
+        this(w,h,w-1,h-1);
     }
     public SliderBoard(){
         this(2,2);
@@ -46,7 +44,7 @@ public class SliderBoard extends Board{
 
     public void setMissingTile(int x, int y){
         if(!valid_position(x,y)){
-            throw new IllegalArgumentException(getInvalidPositionMessage());
+            throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
         }
 
         missing_tile[0] = x; missing_tile[1] = y;
