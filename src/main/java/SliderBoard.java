@@ -115,7 +115,7 @@ public class SliderBoard extends Board{
             }
         }
 
-        int blankRowDistanceFromBottom = height-missing_tile[1];
+        int blankRowDistanceFromBottom = height-missing_tile[0];
 
         // Apply solvability rules
         if (width % 2 != 0) {
