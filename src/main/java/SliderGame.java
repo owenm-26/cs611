@@ -1,6 +1,3 @@
-import java.security.InvalidParameterException;
-import java.text.ParseException;
-
 public class SliderGame extends Game{
     public String player_name;
     public SliderBoard gameboard;
@@ -8,7 +5,7 @@ public class SliderGame extends Game{
 
     public static void main(String[] args){
         String name = getPlayerInfo();
-        System.out.print("Now we'll figure out the dimensions of the board.");
+        System.out.println("Now we'll figure out the dimensions of the board.");
         int[] dimensions = getDesiredBoardDimensions();
         SliderGame game = new SliderGame(dimensions[0],dimensions[1], name);
 
@@ -98,7 +95,7 @@ public class SliderGame extends Game{
         }
 
         // Execute the swap
-        gameboard.swap_tiles(keyToSwapWith);
+        gameboard.slide_tile(keyToSwapWith);
 
     }
 

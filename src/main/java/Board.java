@@ -15,7 +15,7 @@ public abstract class Board {
         }
         height = h;
         width = w;
-        board_arr = new Position[w][h];
+        board_arr = new Position[h][w];
         positions_map = new HashMap<String, int[]>();
     }
 
@@ -31,7 +31,7 @@ public abstract class Board {
 
 
     public static boolean valid_dimension(int w, int h){
-       return w > 2 &&  h > 2;
+       return w > 2 &&  h > 2 && w < 10 && h < 10;
     }
 
     protected boolean valid_position(int x, int y){
@@ -50,7 +50,7 @@ public abstract class Board {
     }
 
     public static String getInvalidDimensionMessage() {
-        return "Dimensions must be greater than 2.";
+        return "Dimensions must be greater than 2 and less than 10.";
     }
 
     protected String getInvalidPositionMessage(int x, int y) {
@@ -58,20 +58,29 @@ public abstract class Board {
     }
 
     public void printCurrentBoard(){
-        // Build the horizontal delimiting string
-        StringBuilder builder = new StringBuilder();
-        builder.append("+");
-        for(int k = 0; k<board_arr.length; k++){
-            builder.append("--+");
+        // find how big each square should
+        int cellWidth = Integer.toString((height*width) -1).length();
+        StringBuilder topBuilder = new StringBuilder();
+        for(int l=0;l<cellWidth+2; l++){
+            topBuilder.append("-");
         }
-        String horizontal = builder.toString();
+        StringBuilder horizontalBuilder = new StringBuilder();
+        horizontalBuilder.append("+");
+        for (int c = 0; c < width; c++) {
+            for (int i = 0; i < cellWidth + 2; i++) {
+                horizontalBuilder.append("-");
+            }
+            horizontalBuilder.append("+");
+        }
+        String horizontal = horizontalBuilder.toString();
 
-        for(int row=0; row<board_arr.length; row++){
+        for(int row=0; row< height; row++){
             System.out.println(horizontal); // print a horizontal above
             System.out.print("|"); // The leftmost vertical bar
-            for(int col=0; col < board_arr[0].length; col++){
-                String current_square = String.format("%s |", board_arr[row][col].getContent());
-                System.out.print(current_square);
+            for(int col=0; col < width; col++){
+                String content = board_arr[row][col].getContent();
+                String formatted = String.format(" %" + cellWidth + "s ", content);
+                System.out.print(formatted + "|");
             }
             System.out.println(); // start new line
         }
