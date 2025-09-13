@@ -1,8 +1,15 @@
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.Random;
 
 // INVARIANT: NO CHARACTERS IN THE SLIDER ARE THE SAME
 public class SliderBoard extends Board{
     public int[] missing_tile;
+
+    public static Random random = new Random();
+
     public SliderBoard(int w, int h, int x, int y){
         super(w,h);
 
@@ -24,12 +31,20 @@ public class SliderBoard extends Board{
 
     @Override
     protected void populateBoard() {
-        int count = 1;
+        List<Integer> range = IntStream.rangeClosed(1, height*width-1)
+                .boxed().collect(Collectors.toList());
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                String content = (col == missing_tile[0] && row == missing_tile[1])
-                        ? " "
-                        : Integer.toString(count++);
+                String content;
+                if (col == missing_tile[0] && row == missing_tile[1]){
+                    content = " ";
+                }
+                else{
+                    int randomIndex = random.nextInt(range.size());
+                    int tileContent = range.get(randomIndex);
+                    range.remove(randomIndex);
+                    content = Integer.toString(tileContent);
+                }
                 int[] coordinates = {col, row};
                 board_arr[row][col] = new Position(content);
                 positions_map.put(content, coordinates);

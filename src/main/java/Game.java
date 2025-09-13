@@ -36,8 +36,6 @@ public abstract class Game {
 
     protected abstract void welcome();
 
-    protected abstract void getPlayerInfo();
-
     protected abstract void playGame();
 
     protected abstract void executeNextMove();

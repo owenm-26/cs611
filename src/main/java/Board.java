@@ -30,8 +30,8 @@ public abstract class Board {
     protected abstract void populateBoard();
 
 
-    protected boolean valid_dimension(int w, int h){
-       return w > 1 &&  h > 1;
+    public static boolean valid_dimension(int w, int h){
+       return w > 2 &&  h > 2;
     }
 
     protected boolean valid_position(int x, int y){
@@ -49,8 +49,8 @@ public abstract class Board {
         return this.width;
     }
 
-    protected String getInvalidDimensionMessage() {
-        return "Dimensions must be greater than 1 and within the size of the board";
+    public static String getInvalidDimensionMessage() {
+        return "Dimensions must be greater than 2.";
     }
 
     protected String getInvalidPositionMessage(int x, int y) {
