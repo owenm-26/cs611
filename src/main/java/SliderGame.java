@@ -62,6 +62,7 @@ public class SliderGame extends Game{
     }
 
     protected void playGame(){
+        turn_count = 0;
         boolean has_won = false;
         gameboard.printCurrentBoard();
 
@@ -147,6 +148,7 @@ public class SliderGame extends Game{
 
         switch(number){
             case 1: {
+                gameboard.populateBoard();
                 playGame();
             }
             case 2:{
