@@ -10,7 +10,7 @@ having the name of their Superclass at the end of their name.
 I use Superclasses as Abstract Base Classes with minimal functionality
 to use as a unified resource for all future `Boards` and `Games`.
 
-![Sliding Puzzle](./sliding_game_udl.png)
+![Sliding Puzzle](sliding_game_udl.png)
 
 ### Inter Class Relationships
 ```agsl
