@@ -1,0 +1,39 @@
+What is your name young buck?
+Owin
+Now we'll figure out the dimensions of the board.
+First give me your desired width: 
+2
+Great now give me the desired height: 
+2
+--- Welcome to Owen Mariani's Slider Puzzle! ---
+You can quit anytime by entering 'QUIT' as your input for any question (except the next one)
+
++---+---+
+|   | 1 |
++---+---+
+| 3 | 2 |
++---+---+
+Owin, which tile do you want to slide to the empty space? 1
+
++---+---+
+| 1 |   |
++---+---+
+| 3 | 2 |
++---+---+
+Owin, which tile do you want to slide to the empty space? 2
+
++---+---+
+| 1 | 2 |
++---+---+
+| 3 |   |
++---+---+
+Good game Owin. You finished the puzzle in 2 turns!
+You make a decent slider 🍔
+
+Enter the number corresponding to your choice:
+[1] Play again
+[2] Quit
+2
+Hope to see you again soon!
+
+Process finished with exit code 0

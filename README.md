@@ -1,0 +1,37 @@
+# Sliding Puzzle Game
+By Owen Mariani (U74333523)
+
+09/13/2025
+
+## File Tree
+Below are the components that make up my solution.
+```
+/src/main/java
+├── Board.java
+├── Game.java
+├── Position.java
+├── SliderBoard.java
+└── SliderGame.java
+```
+
+## Notes
+
+## I/O Example
+See [Sliding Game I/O Example File](sliding_game_io_example.txt)
+
+## Compiling & Running Directions
+This a Maven project so the compilation is made easy for us. Follow the commands below:
+```agsl
+// Compile
+mvn package
+
+// Run SliderGame
+java -cp target/classes SliderGame
+```
+
+## Sources
+Just used W3 Schools and Google's AI generated search responses to 
+brush up on Java basics.
+
+I used ChatGPT to learn best practices
+such as `protected` vs `public` and `abstract class`.
