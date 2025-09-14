@@ -125,6 +125,7 @@ public class SliderGame extends Game{
         String goodGameMessage = String.format("Good game %s. You finished the puzzle in %d %s!\nYou make a decent slider 🍔", player_name, turn_count, turn);
 
         // Ask if they want to play again or quit
+        System.out.println(goodGameMessage);
         System.out.println("\nEnter the number corresponding to your choice:\n[1] Play again\n[2] Quit");
         String selection;
         int number;
@@ -149,7 +150,7 @@ public class SliderGame extends Game{
                 playGame();
             }
             case 2:{
-                System.out.println(goodGameMessage);
+                System.out.println("Hope to see you again soon!");
                 System.exit(0);
             }
             default:{

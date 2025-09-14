@@ -28,10 +28,8 @@ public abstract class Board {
 
     // Abstract Method implemented by each subclass to populate board values
     protected abstract void populateBoard();
-
-
     public static boolean valid_dimension(int w, int h){
-       return w > 2 &&  h > 2 && w < 10 && h < 10;
+       return w > 1 &&  h > 1 && w < 10 && h < 10;
     }
 
     protected boolean valid_position(int x, int y){
@@ -39,14 +37,6 @@ public abstract class Board {
         boolean height_valid = y >= 0 && y < this.height;
 
         return width_valid && height_valid;
-    }
-
-    public int getHeight(){
-        return this.height;
-    }
-
-    public int getWidth(){
-        return this.width;
     }
 
     public static String getInvalidDimensionMessage() {
@@ -86,12 +76,5 @@ public abstract class Board {
         }
         System.out.println(horizontal); // the bottom horizontal
 
-    }
-
-    public String getSquareContent(int x, int y) {
-        if (!valid_position(x, y)) {
-            throw new IndexOutOfBoundsException(getInvalidPositionMessage(x,y));
-        }
-        return this.board_arr[x][y].getContent();
     }
 }

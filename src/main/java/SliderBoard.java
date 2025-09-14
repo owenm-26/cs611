@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +59,7 @@ public class SliderBoard extends Board{
     }
 
     private void makeSolvable(){
+        System.out.println("Making solvable..");
         int[] randomCoordinates1;
         int[] randomCoordinates2;
         int index1;
@@ -79,11 +81,13 @@ public class SliderBoard extends Board{
 
             // Case #2: index1 < index2 and comes before it
             if(index1 < index2 &&  Integer.parseInt(valueAtIndex1) < Integer.parseInt(valueAtIndex2)){
+                System.out.println("Case 2. Swapping");
                 swap_tiles(randomCoordinates1, randomCoordinates2);
                 break;
             }
             // Case #3: index2 < index1 and comes before it
             if(index2 < index1 &&  Integer.parseInt(valueAtIndex2) < Integer.parseInt(valueAtIndex1)){
+                System.out.println("Case 3. Swapping");
                 swap_tiles(randomCoordinates2, randomCoordinates1);
                 break;
             }
@@ -92,22 +96,26 @@ public class SliderBoard extends Board{
     // Checks that the puzzle is solvable
     private boolean isSolvable(){
         String[] flattenedBoardArr = new String[width*height];
-        int count = 0;
+        int index = 0;
         for(int row=0; row < height; row++){
             for(int col=0; col< width; col++){
-                flattenedBoardArr[count++] = board_arr[row][col].getContent();
+                if(board_arr[row][col].getContent().equals(MISSING_TILE_CONTENT)){
+                    continue;
+                }
+                flattenedBoardArr[index] = board_arr[row][col].getContent();
+                index++;
             }
         }
 
         // Count inversions
         int inversions = 0;
-        for (int i = 0; i < height; i++) {
-            if(flattenedBoardArr[i].equals(MISSING_TILE_CONTENT)){
-                continue;
+        for (int i = 0; i < height*width; i++) {
+            if (flattenedBoardArr[i] == null){
+                break;
             }
-            for (int j = i + 1; j < width; j++) {
-                if (flattenedBoardArr[j].equals(MISSING_TILE_CONTENT)){
-                    continue;
+            for (int j = i + 1; j < height*width; j++) {
+                if (flattenedBoardArr[j] == null){
+                    break;
                 }
                 if (Integer.parseInt(flattenedBoardArr[i]) > Integer.parseInt(flattenedBoardArr[j])) {
                     inversions++;
@@ -115,13 +123,15 @@ public class SliderBoard extends Board{
             }
         }
 
-        int blankRowDistanceFromBottom = height-missing_tile[0];
+        int blankRowDistanceFromBottom = height-missing_tile[1];
 
         // Apply solvability rules
         if (width % 2 != 0) {
+//            System.out.println("Odd. inversions:" + inversions + " " + (inversions % 2 == 0));
             return inversions % 2 == 0;
         } else {
-            return (inversions + blankRowDistanceFromBottom) % 2 == 0;
+//            System.out.println("Even. inversions:" + inversions + " distance from bottom: " + blankRowDistanceFromBottom + " " + ((inversions + blankRowDistanceFromBottom) % 2 == 1));
+            return (inversions + blankRowDistanceFromBottom) % 2 == 1;
         }
     }
 
@@ -163,8 +173,11 @@ public class SliderBoard extends Board{
             throw new IllegalArgumentException("Coordinate lists must be 2 elements long");
         }
 
+
         String tile1_content = board_arr[tile1_coordinates[0]][tile1_coordinates[1]].getContent();
         String tile2_content = board_arr[tile2_coordinates[0]][tile2_coordinates[1]].getContent();
+
+        System.out.println("Swapping values. " + tile1_content + "<-->" + tile2_content);
 
         // Make sure you're not swapping the missing_tile because it has special rules
         if (tile1_content.equals(MISSING_TILE_CONTENT)){
