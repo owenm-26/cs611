@@ -24,10 +24,10 @@ See [Sliding Game I/O Example File](documentation/sliding_game_io_example.txt)
 This a Maven project so the compilation is made easy for us. Follow the commands below:
 ```agsl
 // Compile
-mvn package
+mvn clean compile
 
 // Run SliderGame
-java -cp target/classes SliderGame
+mvn exec:java
 ```
 
 ## Sources
