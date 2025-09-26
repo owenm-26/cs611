@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>SliderGame</mainClass>
+                    <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

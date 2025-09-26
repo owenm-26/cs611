@@ -6,7 +6,8 @@ import java.util.Scanner;
 public abstract class Game {
     //TODO: Add to this enum everytime you add a new "Board" child
     public enum GameType {
-        SLIDER
+        SLIDER,
+        DOTS_AND_BOXES
     }
     public int board_width;
     public int board_height;
