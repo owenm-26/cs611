@@ -3,12 +3,14 @@ public class SliderGame extends Game{
     public SliderBoard gameboard;
 
 
-    public static void main(String[] args){
-        String name = getPlayerInfo();
+    public static void runSlider() {
+        System.out.println("\n--- Sliding Puzzle ---");
+        // Reuse existing helpers from SliderGame to keep changes minimal
+        String name = SliderGame.getPlayerInfo();
         System.out.println("Now we'll figure out the dimensions of the board.");
-        int[] dimensions = getDesiredBoardDimensions();
-        SliderGame game = new SliderGame(dimensions[0],dimensions[1], name);
-
+        int[] dims = SliderGame.getDesiredBoardDimensions();
+        new SliderGame(dims[0], dims[1], name); // SliderGame runs its own lifecycle
+        System.out.println();
     }
 
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){

@@ -22,7 +22,7 @@ public final class Main {
             catch (NumberFormatException e) { System.out.println("Invalid choice.\n"); continue; }
 
             switch (choice) {
-                case 1: runSlider(); break;
+                case 1: SliderGame.runSlider(); break;
                 case 2:
                     System.out.println("\n--- Dots & Boxes ---");
                     System.out.println("This game will be available soon. Returning to main menu...\n");
@@ -36,15 +36,7 @@ public final class Main {
         }
     }
 
-    private static void runSlider() {
-        System.out.println("\n--- Sliding Puzzle ---");
-        // Reuse existing helpers from SliderGame to keep changes minimal
-        String name = SliderGame.getPlayerInfo();
-        System.out.println("Now we'll figure out the dimensions of the board.");
-        int[] dims = SliderGame.getDesiredBoardDimensions();
-        new SliderGame(dims[0], dims[1], name); // SliderGame runs its own lifecycle
-        System.out.println();
-    }
+
 
     // Local QUIT check (since Game.quitIfRequested is instance/protected)
     private static boolean exitIfQuit(String s) {
