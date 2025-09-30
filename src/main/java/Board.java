@@ -6,7 +6,7 @@ public abstract class Board {
     public int height;
     public int width;
 
-    public Position[][] board_arr;
+    public Tile[][] board_arr;
     public HashMap<String, int[]> positions_map;
 
     public Board(int w, int h){
@@ -15,7 +15,7 @@ public abstract class Board {
         }
         height = h;
         width = w;
-        board_arr = new Position[h][w];
+        board_arr = new Tile[h][w];
         positions_map = new HashMap<String, int[]>();
     }
 
@@ -44,7 +44,7 @@ public abstract class Board {
     }
 
     protected String getInvalidPositionMessage(int x, int y) {
-        return String.format("Position must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d. You gave positions (%d, %d)", this.width, this.height,x,y);
+        return String.format("Tile must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d. You gave positions (%d, %d)", this.width, this.height,x,y);
     }
 
     public void printCurrentBoard(){

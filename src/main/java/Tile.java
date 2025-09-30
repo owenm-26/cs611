@@ -1,12 +1,12 @@
-public class Position {
+public class Tile {
 
     public String content;
 
-    public Position(String content){
+    public Tile(String content){
         this.content=content;
     }
 
-    public Position(){
+    public Tile(){
         this("-");
     }
     public String getContent(){

@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class SliderBoard extends Board{
                     content = Integer.toString(tileContent);
                 }
                 int[] coordinates = {row, col};
-                board_arr[row][col] = new Position(content);
+                board_arr[row][col] = new Tile(content);
                 positions_map.put(content, coordinates);
             }
         }
