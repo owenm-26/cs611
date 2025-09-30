@@ -3,7 +3,6 @@ public class Player {
     private float score;     
     private boolean turn;    
 
-    // Constructors
     public Player(String name) {
         this(name, 0.0f, false);
     }
@@ -14,7 +13,6 @@ public class Player {
         this.turn = turn;
     }
 
-    // Name 
     public String getName() {
         return this.name;
     }
@@ -24,7 +22,6 @@ public class Player {
         }
     }
 
-    // Score 
     public float getScore() {
         return score;
     }
@@ -37,7 +34,6 @@ public class Player {
         this.score += 1.0f;
     }
 
-    // Turn
     public boolean getTurn() {
         return turn;
     }

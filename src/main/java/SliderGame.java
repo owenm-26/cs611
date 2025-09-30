@@ -1,5 +1,5 @@
 public class SliderGame extends Game{
-    // public String player_name; -- IGNORE --
+    // public String player_name; DELETE BEFORE SUBMISSION
     public SliderBoard gameboard;
 
 
@@ -61,7 +61,7 @@ public class SliderGame extends Game{
 
     }
 
-    // No longer used -- safe to clean up later
+    // No longer used -- safe to clean up later -- DELETE BEFORE SUBMISSION
     // protected static String getPlayerInfo(){
     //     System.out.println("What is your name young buck?");
     //     return scanner.nextLine();

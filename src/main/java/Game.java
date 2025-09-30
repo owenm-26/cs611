@@ -25,7 +25,6 @@ public abstract class Game {
         board_height = height;
     }
 
-    // set/get for players array
     protected void setPlayers(Player[] players) { this.players = players; }
     protected Player[] getPlayers() { return this.players; }
 
