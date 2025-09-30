@@ -1,21 +1,24 @@
 public class SliderGame extends Game{
-    public String player_name;
+    // public String player_name; DELETE BEFORE SUBMISSION
     public SliderBoard gameboard;
 
 
     public static void runSlider() {
         System.out.println("\n--- Sliding Puzzle ---");
-        // Reuse existing helpers from SliderGame to keep changes minimal
-        String name = SliderGame.getPlayerInfo();
+        // Create a Player and get their name
+        Player p = new Player("Player");
+        p.promptForName();
+
         System.out.println("Now we'll figure out the dimensions of the board.");
         int[] dims = SliderGame.getDesiredBoardDimensions();
-        new SliderGame(dims[0], dims[1], name); // SliderGame runs its own lifecycle
+        new SliderGame(dims[0], dims[1], p.getName()); // SliderGame runs its own lifecycle
         System.out.println();
     }
 
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){
         super(width, height);
-        player_name=playerName;
+        setPlayers(new Player[]{ new Player(playerName) });
+        players[0].setTurn(true);
         gameboard = new SliderBoard(width, height, missing_x, missing_y);
         initializeGame();
     }
@@ -58,10 +61,11 @@ public class SliderGame extends Game{
 
     }
 
-    protected static String getPlayerInfo(){
-        System.out.println("What is your name young buck?");
-        return scanner.nextLine();
-    }
+    // No longer used -- safe to clean up later -- DELETE BEFORE SUBMISSION
+    // protected static String getPlayerInfo(){
+    //     System.out.println("What is your name young buck?");
+    //     return scanner.nextLine();
+    // }
 
     protected void playGame(){
         turn_count = 0;
@@ -78,7 +82,8 @@ public class SliderGame extends Game{
 
     protected void executeNextMove(){
         String keyToSwapWith = null;
-        String message = String.format("%s, which tile do you want to slide to the empty space? ", player_name);
+        String displayName = (players != null && players.length > 0) ? players[0].getName() : "Player";
+        String message = String.format("%s, which tile do you want to slide to the empty space? ", displayName);
 
         // Validate the requested move
         while (true){
@@ -125,7 +130,8 @@ public class SliderGame extends Game{
 
     protected void endGame(){
         String turn = turn_count == 1 ? "turn" : "turns";
-        String goodGameMessage = String.format("Good game %s. You finished the puzzle in %d %s!\nYou make a decent slider 🍔", player_name, turn_count, turn);
+        String displayName = (players != null && players.length > 0) ? players[0].getName() : "Player";
+        String goodGameMessage = String.format("Good game %s. You finished the puzzle in %d %s!\nYou make a decent slider 🍔", displayName, turn_count, turn);
 
         // Ask if they want to play again or quit
         System.out.println(goodGameMessage);

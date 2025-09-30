@@ -13,6 +13,9 @@ public abstract class Game {
     public int board_height;
     public int turn_count=0;
 
+    // Shared players array (1+ players depending on the game)
+    protected Player[] players;
+
     public static String RESERVED_QUIT_KEYWORD = "QUIT";
     public static Scanner scanner = new Scanner(System.in);
 
@@ -21,6 +24,9 @@ public abstract class Game {
         board_width = width;
         board_height = height;
     }
+
+    protected void setPlayers(Player[] players) { this.players = players; }
+    protected Player[] getPlayers() { return this.players; }
 
     protected String getHowToQuitMessage(){
         return "You can quit anytime by entering 'QUIT' as your input for any question";
