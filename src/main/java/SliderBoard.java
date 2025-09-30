@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import java.util.Random;
 
 // INVARIANT: NO CHARACTERS IN THE SLIDER ARE THE SAME
-public class SliderBoard extends Board{
+public class SliderBoard extends Board<PuzzleTile>{
     public int[] missing_tile;
     public static String MISSING_TILE_CONTENT=" ";
 
@@ -13,6 +13,7 @@ public class SliderBoard extends Board{
 
     public SliderBoard(int w, int h, int x, int y){
         super(w,h);
+        board_arr = new PuzzleTile[h][w];
 
         if (!valid_position(x,y)){
             throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
@@ -47,12 +48,12 @@ public class SliderBoard extends Board{
                     content = Integer.toString(tileContent);
                 }
                 int[] coordinates = {row, col};
-                board_arr[row][col] = new Tile(content);
+                board_arr[row][col] = new PuzzleTile(content);
                 positions_map.put(content, coordinates);
             }
         }
         // Add a swap to make it solvable
-        if(!isSolvable()){
+        if(!isSolvable()) {
             makeSolvable();
         }
     }
@@ -207,5 +208,36 @@ public class SliderBoard extends Board{
 
         // Update missing tile to be the coordinates of the new empty tile
         setMissingTile(to_be_swapped_coordinates[0], to_be_swapped_coordinates[1]);
+    }
+
+    public void printCurrentBoard(){
+        // find how big each square should
+        int cellWidth = Integer.toString((height*width) -1).length();
+        StringBuilder topBuilder = new StringBuilder();
+        for(int l=0;l<cellWidth+2; l++){
+            topBuilder.append("-");
+        }
+        StringBuilder horizontalBuilder = new StringBuilder();
+        horizontalBuilder.append("+");
+        for (int c = 0; c < width; c++) {
+            for (int i = 0; i < cellWidth + 2; i++) {
+                horizontalBuilder.append("-");
+            }
+            horizontalBuilder.append("+");
+        }
+        String horizontal = horizontalBuilder.toString();
+
+        for(int row=0; row< height; row++){
+            System.out.println(horizontal); // print a horizontal above
+            System.out.print("|"); // The leftmost vertical bar
+            for(int col=0; col < width; col++){
+                String content = board_arr[row][col].getContent();
+                String formatted = String.format(" %" + cellWidth + "s ", content);
+                System.out.print(formatted + "|");
+            }
+            System.out.println(); // start new line
+        }
+        System.out.println(horizontal); // the bottom horizontal
+
     }
 }
