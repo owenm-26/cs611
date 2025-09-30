@@ -14,12 +14,12 @@ to use as a unified resource for all future `Boards` and `Games`.
 
 ### Inter Class Relationships
 ```agsl
-Game > Board > Position(s)
-SliderGame > SlideBoard > Position(s)
+Game > Board > Tile(s)
+SliderGame > SlideBoard > Tile(s)
 ```
 
 I used inheritance for **extendibility** so that I can quickly make new games / boards and modify them
-with ease. In particular, I chose to make Position's contents of type String as it is the most
+with ease. In particular, I chose to make Tile's contents of type String as it is the most
 flexible for customization, but in the future may later change the contents to an object if needed.
 
 I encouraged **scalability** by designing efficient ways to check if the user has won the game, using

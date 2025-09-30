@@ -2,19 +2,6 @@ public class SliderGame extends Game{
     // public String player_name; DELETE BEFORE SUBMISSION
     public SliderBoard gameboard;
 
-
-    public static void runSlider() {
-        System.out.println("\n--- Sliding Puzzle ---");
-        // Create a Player and get their name
-        Player p = new Player("Player");
-        p.promptForName();
-
-        System.out.println("Now we'll figure out the dimensions of the board.");
-        int[] dims = SliderGame.getDesiredBoardDimensions();
-        new SliderGame(dims[0], dims[1], p.getName()); // SliderGame runs its own lifecycle
-        System.out.println();
-    }
-
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){
         super(width, height);
         setPlayers(new Player[]{ new Player(playerName) });
@@ -33,7 +20,7 @@ public class SliderGame extends Game{
     }
 
     protected void welcome(){
-        System.out.println("--- Welcome to Owen Mariani's Slider Puzzle! ---");
+        System.out.println("--- Welcome to the Slider Puzzle! ---");
         System.out.println(getHowToQuitMessage() + " (except the next one)\n");
     }
 
@@ -60,12 +47,6 @@ public class SliderGame extends Game{
         }
 
     }
-
-    // No longer used -- safe to clean up later -- DELETE BEFORE SUBMISSION
-    // protected static String getPlayerInfo(){
-    //     System.out.println("What is your name young buck?");
-    //     return scanner.nextLine();
-    // }
 
     protected void playGame(){
         turn_count = 0;
@@ -168,6 +149,17 @@ public class SliderGame extends Game{
             }
         }
 
+    }
 
+    public static void runSlider() {
+        System.out.println("\n--- Sliding Puzzle ---");
+        // Create a Player and get their name
+        Player p = new Player("Player");
+        p.promptForName();
+
+        System.out.println("Now we'll figure out the dimensions of the board.");
+        int[] dims = SliderGame.getDesiredBoardDimensions();
+        new SliderGame(dims[0], dims[1], p.getName()); // SliderGame runs its own lifecycle
+        System.out.println();
     }
 }

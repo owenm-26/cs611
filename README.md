@@ -9,7 +9,7 @@ Below are the components that make up my solution.
 /src/main/java
 ├── Board.java
 ├── Game.java
-├── Position.java
+├── Tile.java
 ├── SliderBoard.java
 └── SliderGame.java
 ```
