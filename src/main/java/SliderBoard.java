@@ -30,8 +30,6 @@ public class SliderBoard extends Board<PuzzleTile>{
     public SliderBoard(){
         this(3,3);
     }
-
-    @Override
     protected void populateBoard() {
         List<Integer> range = IntStream.rangeClosed(1, height*width-1)
                 .boxed().collect(Collectors.toList());

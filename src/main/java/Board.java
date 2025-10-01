@@ -25,8 +25,6 @@ public abstract class Board<T extends Tile> {
         this(2,2);
     }
 
-    // Abstract Method implemented by each subclass to populate board values
-    protected abstract void populateBoard();
     public static boolean valid_dimension(int w, int h){
        return w > 1 &&  h > 1 && w < 10 && h < 10;
     }
