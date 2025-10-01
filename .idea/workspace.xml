@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a50df29-3ccf-4431-b8a1-ded43b0e7fbe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/PuzzleTile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DABBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ConnectionsTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ConnectionsTile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SliderBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SliderBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SliderGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SliderGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
