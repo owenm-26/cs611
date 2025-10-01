@@ -31,4 +31,14 @@ public class ConnectionsTile extends Tile{
     public String toString(){
         return "";
     }
+    public boolean areConnected(ConnectionsTile other) {
+        if (other == null) 
+            return false;
+        if (connectedTiles != null) {
+            for (ConnectionsTile t : connectedTiles) {
+                if (t == other) return true;  
+            }
+        }
+        return false;
+    }
 }
