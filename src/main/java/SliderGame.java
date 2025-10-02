@@ -99,7 +99,7 @@ public class SliderGame extends Game{
         for(int row=0; row < board_height; row++){
 
             for(int col=0; col < board_width; col++){
-                if (correctCurrentNum!=gameboard.height * gameboard.width && Integer.parseInt(gameboard.board_arr[row][col].getContent()) != correctCurrentNum){
+                if (correctCurrentNum!=gameboard.height * gameboard.width && Integer.parseInt(gameboard.board_arr[row][col].getPiecesOnTile().get(0).getContent()) != correctCurrentNum){
                     return false;
                 }
                 correctCurrentNum++;
