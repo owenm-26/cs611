@@ -57,7 +57,14 @@ public class Player {
         }
 
         this.setName(s.isEmpty() ? "Player" : s);
-}
+    }
+    public char getInitial() {
+        String nameSafe = (this.name == null || this.name.trim().isEmpty())? "?": this.name.trim();
+        return Character.toUpperCase(nameSafe.charAt(0));
+    }
+
+    
+
 
 
 }

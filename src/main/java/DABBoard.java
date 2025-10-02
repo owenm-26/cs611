@@ -9,14 +9,7 @@ public class DABBoard extends Board<ConnectionsTile>{
 
     public DABBoard(int w, int h){
         super(w,h); 
-        
-        // DAB-specific minimum: at least 3×3 dots (=> 2×2 boxes)
-        if (w < 3 || h < 3) {
-            throw new IllegalArgumentException(
-                "Dots & Boxes requires at least 3×3 dots. Max is 9×9 dots."
-            );
-        }
-        
+                
         board_arr = new ConnectionsTile[height][width];
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
@@ -32,6 +25,17 @@ public class DABBoard extends Board<ConnectionsTile>{
     public DABBoard(){
         this(4);
     }
+
+    @Override
+    protected boolean isValidDimension(int w, int h) {
+        return w >= 3 && h >= 3 && w < 10 && h < 10; // 3..9 dots
+    }
+
+    @Override
+    protected String invalidDimensionMessage() {
+        return "Dots & Boxes requires at least 3×3 dots and at most 9×9.";
+    }
+
     // TODO: Implement Print Board
     public void printCurrentBoard() {
         final String H_NONE = "   ";         
@@ -47,7 +51,7 @@ public class DABBoard extends Board<ConnectionsTile>{
                     if (owner == null) {
                         sb.append(H_NONE); // no horizontal edge
                     } else {
-                        sb.append('-').append(initial(owner)).append('-'); 
+                        sb.append('-').append(owner.getInitial()).append('-'); 
                     }
                 }
             }
@@ -58,7 +62,7 @@ public class DABBoard extends Board<ConnectionsTile>{
                 sb.setLength(0);
                 for (int c = 0; c < width; c++) {
                     Player owner = vOwner[r][c];
-                    sb.append(owner == null ? ' ' : initial(owner));
+                    sb.append(owner == null ? ' ' : owner.getInitial());
 
                     if (c < width - 1) sb.append(H_NONE);
                 }
@@ -67,14 +71,9 @@ public class DABBoard extends Board<ConnectionsTile>{
         }
         System.out.println();
     }
-    private char initial(Player p) {
-        String name = (p == null || p.getName() == null || p.getName().isEmpty())
-            ? "?" : p.getName().trim();
-        return Character.toUpperCase(name.charAt(0));
-    }
 
-
-    private boolean inBounds(int r, int c) {
+    @Override
+    protected boolean valid_position(int r, int c) {
         return r >= 0 && r < height && c >= 0 && c < width;
     }
 
@@ -84,7 +83,7 @@ public class DABBoard extends Board<ConnectionsTile>{
     public HashMap<String, int[]> getValidConnections(int row, int col) {
         HashMap<String, int[]> map = new HashMap<>();
 
-        if (!inBounds(row, col)) return map;
+        if (!valid_position(row, col)) return map;
         ConnectionsTile a = board_arr[row][col];
         if (a == null) return map;
 
@@ -94,7 +93,7 @@ public class DABBoard extends Board<ConnectionsTile>{
         for (int i = 0; i < 4; i++) {
             int nr = row + DIRS[i][0];
             int nc = col + DIRS[i][1];
-            if (!inBounds(nr, nc)) continue;
+            if (!valid_position(nr, nc)) continue;
 
             ConnectionsTile b = board_arr[nr][nc];
             if (b == null) continue;
@@ -110,7 +109,7 @@ public class DABBoard extends Board<ConnectionsTile>{
     //  and should make a two-way connection between the tiles
 
     public int makeConnection(int r1, int c1, int r2, int c2, Player owner) {
-        if (!inBounds(r1, c1) || !inBounds(r2, c2))
+        if (!valid_position(r1, c1) || !valid_position(r2, c2))
             throw new IllegalArgumentException("Out of bounds.");
         if (Math.abs(r1 - r2) + Math.abs(c1 - c2) != 1)
             throw new IllegalArgumentException("Dots must be orthogonal neighbors.");
