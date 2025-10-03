@@ -1,5 +1,4 @@
 public class SliderGame extends Game{
-    // public String player_name; DELETE BEFORE SUBMISSION
     public SliderBoard gameboard;
 
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){
@@ -7,45 +6,11 @@ public class SliderGame extends Game{
         setPlayers(new Player[]{ new Player(playerName) });
         players[0].setTurn(true);
         gameboard = new SliderBoard(width, height, missing_x, missing_y);
-        initializeGame();
+        initializeGame(GameType.SLIDER);
     }
 
     public SliderGame(int width, int height, String playerName){
         this(width, height, width-2, height-2, playerName);
-    }
-
-    protected void initializeGame(){
-        welcome();
-        playGame();
-    }
-
-    protected void welcome(){
-        System.out.println("--- Welcome to the Slider Puzzle! ---");
-        System.out.println(getHowToQuitMessage() + " (except the next one)\n");
-    }
-
-    protected static int[] getDesiredBoardDimensions(){
-        System.out.println("First give me your desired width: ");
-        String userInputtedWidth = scanner.nextLine();
-        System.out.println("Great now give me the desired height: ");
-        String userInputtedHeight = scanner.nextLine();
-        int width; int height;
-        try{
-            width = Integer.parseInt(userInputtedWidth);
-            height = Integer.parseInt(userInputtedHeight);
-            if (!Board.valid_dimension(width, height)) {
-                throw new IllegalArgumentException();
-            }
-            int[] dimensions = {width, height};
-            return dimensions;
-        }catch (NumberFormatException e){
-            System.out.println("Oops, looks like you entered non-integers. Please try again.");
-            return getDesiredBoardDimensions();
-        }catch (IllegalArgumentException e){
-            System.out.println(Board.getInvalidDimensionMessage() + " Please try again.");
-            return getDesiredBoardDimensions();
-        }
-
     }
 
     protected void playGame(){

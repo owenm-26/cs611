@@ -39,9 +39,48 @@ public abstract class Game {
         }
     }
 
-    protected abstract void initializeGame();
+    protected static int[] getDesiredBoardDimensions(){
+        System.out.println("First give me your desired width: ");
+        String userInputtedWidth = scanner.nextLine();
+        System.out.println("Great now give me the desired height: ");
+        String userInputtedHeight = scanner.nextLine();
+        int width; int height;
+        try{
+            width = Integer.parseInt(userInputtedWidth);
+            height = Integer.parseInt(userInputtedHeight);
+            if (!Board.valid_dimension(width, height)) {
+                throw new IllegalArgumentException();
+            }
+            int[] dimensions = {width, height};
+            return dimensions;
+        }catch (NumberFormatException e){
+            System.out.println("Oops, looks like you entered non-integers. Please try again.");
+            return getDesiredBoardDimensions();
+        }catch (IllegalArgumentException e){
+            System.out.println(Board.getInvalidDimensionMessage() + " Please try again.");
+            return getDesiredBoardDimensions();
+        }
 
-    protected abstract void welcome();
+    }
+
+    protected void initializeGame(GameType gameType){
+        String gameName = "";
+        switch (gameType){
+            case SLIDER:
+                gameName = "Sliding Puzzle";
+                break;
+            case DOTS_AND_BOXES:
+                gameName = "Dots and Boxes";
+                break;
+        }
+        welcome(gameName);
+        playGame();
+    }
+
+    protected void welcome(String gameName){
+        System.out.printf("--- Welcome to the %s! ---", gameName);
+        System.out.println(getHowToQuitMessage() + " (except the next one)\n");
+    }
 
     protected abstract void playGame();
 
