@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import java.util.Random;
 
 // INVARIANT: NO CHARACTERS IN THE SLIDER ARE THE SAME
-public class SliderBoard extends Board<Tile<PuzzlePiece>>{
+public class SliderBoard extends Board<PuzzlePiece>{
     public int[] missing_tile;
     public static String MISSING_TILE_CONTENT=" ";
 
@@ -13,14 +13,13 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
 
     public SliderBoard(int w, int h, int x, int y){
         super(w,h);
-        board_arr = new Tile[h][w];
-
+        board_arr = (Tile<PuzzlePiece>[][]) new Tile[h][w];
         if (!valid_position(x,y)){
             throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
         }
 
         missing_tile = new int[2];
-        missing_tile[0] = x; missing_tile[1] = y;
+        missing_tile[0] = y; missing_tile[1] = x;
 
         populateBoard();
     }
@@ -36,7 +35,7 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 String content;
-                if (col == missing_tile[0] && row == missing_tile[1]){
+                if (row == missing_tile[0] && col == missing_tile[1]){
                     content = MISSING_TILE_CONTENT;
                 }
                 else{
@@ -46,7 +45,7 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
                     content = Integer.toString(tileContent);
                 }
                 int[] coordinates = {row, col};
-                board_arr[row][col] = new Tile();
+                board_arr[row][col] = new Tile<PuzzlePiece>();
                 board_arr[row][col].addPiece(new PuzzlePiece(content));
 
                 positions_map.put(content, coordinates);
@@ -59,7 +58,6 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
     }
 
     private void makeSolvable(){
-        System.out.println("Making solvable..");
         int[] randomCoordinates1;
         int[] randomCoordinates2;
         int index1;
@@ -81,13 +79,11 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
 
             // Case #2: index1 < index2 and comes before it
             if(index1 < index2 &&  Integer.parseInt(valueAtIndex1) < Integer.parseInt(valueAtIndex2)){
-                System.out.println("Case 2. Swapping");
                 swap_tiles(randomCoordinates1, randomCoordinates2);
                 break;
             }
             // Case #3: index2 < index1 and comes before it
             if(index2 < index1 &&  Integer.parseInt(valueAtIndex2) < Integer.parseInt(valueAtIndex1)){
-                System.out.println("Case 3. Swapping");
                 swap_tiles(randomCoordinates2, randomCoordinates1);
                 break;
             }
@@ -123,7 +119,7 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
             }
         }
 
-        int blankRowDistanceFromBottom = height-missing_tile[1];
+        int blankRowDistanceFromBottom = height-missing_tile[0];
 
         // Apply solvability rules
         if (width % 2 != 0) {
@@ -140,17 +136,17 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
             throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
         }
 
-        missing_tile[0] = x; missing_tile[1] = y;
+        missing_tile[0] = y; missing_tile[1] = x;
     }
 
     public HashMap<String, int[]> getEligibleSwapCharacters(){
         HashMap<String, int[]> neighbors_keys = new HashMap<String, int[]>();
 
         int[][] DIRECTIONS = {
-                { 1, 0 },  // Right
-                { -1, 0 }, // Left
-                { 0, 1 },  // Down
-                { 0, -1 }  // Up
+                { 1, 0 },   // Down
+                { -1, 0 },  // Up
+                { 0, 1 },   // Right
+                { 0, -1 }   // Left
         };
 
         for (int i = 0; i < DIRECTIONS.length; i++) {
@@ -158,7 +154,7 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
             int ny = missing_tile[1] + DIRECTIONS[i][1];
 
             // Check boundaries
-            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+            if (nx >= 0 && nx < height && ny >= 0 && ny < width) {
                 int[] coordinates = new int[2];
                 coordinates[0] = nx; coordinates[1] = ny;
                 neighbors_keys.put(board_arr[nx][ny].getPiecesOnTile().get(0).getContent(), coordinates);
@@ -166,6 +162,11 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
         }
 
         return neighbors_keys;
+    }
+
+    @Override
+    protected boolean valid_position(int x, int y) {
+        return super.valid_position(x, y);
     }
 
     protected void swap_tiles(int[] tile1_coordinates, int[] tile2_coordinates){
@@ -176,8 +177,6 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
 
         String tile1_content = board_arr[tile1_coordinates[0]][tile1_coordinates[1]].getPiecesOnTile().get(0).getContent();
         String tile2_content = board_arr[tile2_coordinates[0]][tile2_coordinates[1]].getPiecesOnTile().get(0).getContent();
-
-        System.out.println("Swapping values. " + tile1_content + "<-->" + tile2_content);
 
         // Make sure you're not swapping the missing_tile because it has special rules
         if (tile1_content.equals(MISSING_TILE_CONTENT)){
@@ -195,21 +194,27 @@ public class SliderBoard extends Board<Tile<PuzzlePiece>>{
 
     }
 
-    public void slide_tile(String key_to_swap_with){
-        HashMap<String, int[]> valid_swap_tiles = getEligibleSwapCharacters();
+    public void slide_tile(String key) {
+        HashMap<String, int[]> validSwaps = getEligibleSwapCharacters();
 
-        if (!valid_swap_tiles.containsKey(key_to_swap_with)){
-            throw new IllegalArgumentException("Not an eligible key to swap with. Must be up, left, right, or down of the empty space in order to swap.");
+        if (!validSwaps.containsKey(key)) {
+            throw new IllegalArgumentException("Invalid swap: must be adjacent to empty.");
         }
-        int[] to_be_swapped_coordinates = valid_swap_tiles.get(key_to_swap_with);
 
-        // Swap the contents of the tiles
-        String temp_content = board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getPiecesOnTile().get(0).getContent();
-        board_arr[missing_tile[0]][missing_tile[1]].getPiecesOnTile().get(0).setContent(temp_content);
-        board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getPiecesOnTile().get(0).setContent(MISSING_TILE_CONTENT);
+        int[] target = validSwaps.get(key);
 
-        // Update missing tile to be the coordinates of the new empty tile
-        setMissingTile(to_be_swapped_coordinates[0], to_be_swapped_coordinates[1]);
+        int blankRow = missing_tile[0];
+        int blankCol = missing_tile[1];
+
+        // swap contents
+        String pieceContent = board_arr[target[0]][target[1]].getPiecesOnTile().get(0).getContent();
+
+        board_arr[blankRow][blankCol].getPiecesOnTile().get(0).setContent(pieceContent);
+        board_arr[target[0]][target[1]].getPiecesOnTile().get(0).setContent(MISSING_TILE_CONTENT);
+
+        // update missing tile
+        missing_tile[0] = target[0];
+        missing_tile[1] = target[1];
     }
 
     public void printCurrentBoard(){

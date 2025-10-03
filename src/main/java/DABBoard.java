@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class DABBoard extends Board<ConnectionsTile>{
+public class DABBoard extends Board<ConnectionsPiece>{
 
     // Horizontal edge between (r,c) and (r,c+1)  -> hOwner[r][c]
     // Vertical edge between (r,c) and (r+1,c)    -> vOwner[r][c]
@@ -8,12 +8,13 @@ public class DABBoard extends Board<ConnectionsTile>{
     private Player[][] vOwner; // [height-1][width]
 
     public DABBoard(int w, int h){
-        super(w,h); 
-                
-        board_arr = new ConnectionsTile[height][width];
+        super(w,h);
+        board_arr = (Tile<ConnectionsPiece>[][]) new Tile[h][w];
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
-                board_arr[r][c] = new ConnectionsTile();
+                Tile<ConnectionsPiece> tile = new Tile<>();
+                tile.addPiece(new ConnectionsPiece());
+                board_arr[r][c] = tile;
             }
         }
         hOwner = new Player[height][width - 1];
@@ -29,6 +30,11 @@ public class DABBoard extends Board<ConnectionsTile>{
     @Override
     protected boolean isValidDimension(int w, int h) {
         return w >= 3 && h >= 3 && w < 10 && h < 10; // 3..9 dots
+    }
+
+    @Override
+    protected boolean valid_position(int r, int c) {
+        return r >= 0 && r < height && c >= 0 && c < width;
     }
 
     @Override
@@ -75,7 +81,7 @@ public class DABBoard extends Board<ConnectionsTile>{
         HashMap<String, int[]> map = new HashMap<>();
 
         if (!valid_position(row, col)) return map;
-        ConnectionsTile a = board_arr[row][col];
+        ConnectionsPiece a = board_arr[row][col].getPiecesOnTile().get(0);
         if (a == null) return map;
 
         final int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
@@ -86,16 +92,16 @@ public class DABBoard extends Board<ConnectionsTile>{
             int nc = col + DIRS[i][1];
             if (!valid_position(nr, nc)) continue;
 
-            ConnectionsTile b = board_arr[nr][nc];
+            ConnectionsPiece b = board_arr[nr][nc].getPiecesOnTile().get(0);
             if (b == null) continue;
 
-            if (!a.areConnected(b)) {
+
+            if (ConnectionsPiece.piecesAreConnected(a,b)) {
                 map.put(KEYS[i], new int[]{nr, nc});
             }
         }
         return map;
     }
-
 
     public int makeConnection(int r1, int c1, int r2, int c2, Player owner) {
         if (!valid_position(r1, c1) || !valid_position(r2, c2))
@@ -103,10 +109,10 @@ public class DABBoard extends Board<ConnectionsTile>{
         if (Math.abs(r1 - r2) + Math.abs(c1 - c2) != 1)
             throw new IllegalArgumentException("Dots must be orthogonal neighbors.");
 
-        ConnectionsTile a = board_arr[r1][c1];
-        ConnectionsTile b = board_arr[r2][c2];
+        ConnectionsPiece a = board_arr[r1][c1].getPiecesOnTile().get(0);
+        ConnectionsPiece b = board_arr[r2][c2].getPiecesOnTile().get(0);
         if (a == null || b == null) throw new IllegalStateException("Uninitialized dot(s).");
-        if (a.areConnected(b)) throw new IllegalArgumentException("Edge already exists.");
+        if (ConnectionsPiece.piecesAreConnected(a,b)) throw new IllegalArgumentException("Edge already exists.");
 
         // Add undirected connection
         a.addConnection(b);
@@ -146,18 +152,16 @@ public class DABBoard extends Board<ConnectionsTile>{
 
     private boolean hasHEdge(int r, int c) {
         // edge between (r,c) and (r,c+1)
-        ConnectionsTile left = board_arr[r][c];
-        ConnectionsTile right = board_arr[r][c + 1];
-        return left != null && right != null && left.areConnected(right);
+        ConnectionsPiece left = board_arr[r][c].getPiecesOnTile().get(0);
+        ConnectionsPiece right = board_arr[r][c + 1].getPiecesOnTile().get(0);
+        return left != null && right != null && ConnectionsPiece.piecesAreConnected(left,right);
     }
 
     private boolean hasVEdge(int r, int c) {
         // edge between (r,c) and (r+1,c)
-        ConnectionsTile top = board_arr[r][c];
-        ConnectionsTile bottom = board_arr[r + 1][c];
-        return top != null && bottom != null && top.areConnected(bottom);
+        ConnectionsPiece top = board_arr[r][c].getPiecesOnTile().get(0);
+        ConnectionsPiece bottom = board_arr[r + 1][c].getPiecesOnTile().get(0);
+        return top != null && bottom != null && ConnectionsPiece.piecesAreConnected(top, bottom);
     }
 
-
-    
 }

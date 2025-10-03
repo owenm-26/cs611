@@ -9,6 +9,7 @@ public abstract class Game {
         SLIDER,
         DOTS_AND_BOXES
     }
+
     public int board_width;
     public int board_height;
     public int turn_count=0;
@@ -63,7 +64,7 @@ public abstract class Game {
 
     }
 
-    protected void initializeGame(GameType gameType){
+    protected void initializeGame(GameType gameType, Board gameboard){
         String gameName = "";
         switch (gameType){
             case SLIDER:
@@ -74,7 +75,7 @@ public abstract class Game {
                 break;
         }
         welcome(gameName);
-        playGame();
+        playGame(gameboard);
     }
 
     protected void welcome(String gameName){
@@ -82,7 +83,18 @@ public abstract class Game {
         System.out.println(getHowToQuitMessage() + " (except the next one)\n");
     }
 
-    protected abstract void playGame();
+    protected void playGame(Board gameboard){
+        turn_count = 0;
+        boolean has_won = false;
+        gameboard.printCurrentBoard();
+
+        while (!has_won){
+            executeNextMove();
+            gameboard.printCurrentBoard();
+            has_won = checkWin();
+        }
+        endGame();
+    }
 
     protected abstract void executeNextMove();
 

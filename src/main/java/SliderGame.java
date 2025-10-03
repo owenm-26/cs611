@@ -5,25 +5,12 @@ public class SliderGame extends Game{
         super(width, height);
         setPlayers(new Player[]{ new Player(playerName) });
         players[0].setTurn(true);
-        gameboard = new SliderBoard(width, height, missing_x, missing_y);
-        initializeGame(GameType.SLIDER);
+        gameboard = new SliderBoard(board_width, board_height, missing_x, missing_y);
+        initializeGame(GameType.SLIDER, gameboard);
     }
 
     public SliderGame(int width, int height, String playerName){
         this(width, height, width-2, height-2, playerName);
-    }
-
-    protected void playGame(){
-        turn_count = 0;
-        boolean has_won = false;
-        gameboard.printCurrentBoard();
-
-        while (!has_won){
-            executeNextMove();
-            gameboard.printCurrentBoard();
-            has_won = checkWin();
-        }
-        endGame();
     }
 
     protected void executeNextMove(){
@@ -103,7 +90,7 @@ public class SliderGame extends Game{
         switch(number){
             case 1: {
                 gameboard.populateBoard();
-                playGame();
+                playGame(gameboard);
             }
             case 2:{
                 System.out.println("Hope to see you again soon!");

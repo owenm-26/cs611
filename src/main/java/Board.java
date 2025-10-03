@@ -2,11 +2,11 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 
-public abstract class Board<T extends Tile> {
+public abstract class Board<T extends Piece> {
     public int height;
     public int width;
 
-    public T[][] board_arr;
+    public Tile<T>[][] board_arr;
     public HashMap<String, int[]> positions_map;
 
     public Board(int w, int h){
