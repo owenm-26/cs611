@@ -10,8 +10,8 @@ public abstract class Board<T extends Tile> {
     public HashMap<String, int[]> positions_map;
 
     public Board(int w, int h){
-        if (!(valid_dimension(w,h))){
-            throw new InvalidParameterException(getInvalidDimensionMessage());
+        if (!(isValidDimension(w,h))){
+            throw new InvalidParameterException(invalidDimensionMessage());
         }
         height = h;
         width = w;
@@ -27,6 +27,14 @@ public abstract class Board<T extends Tile> {
 
     public static boolean valid_dimension(int w, int h){
        return w > 1 &&  h > 1 && w < 10 && h < 10;
+    }
+
+    protected boolean isValidDimension(int w, int h){
+        return valid_dimension(w,h);
+    }
+
+    protected String invalidDimensionMessage() {
+        return "Dimensions must be greater than 2 and less than 10.";
     }
 
     protected boolean valid_position(int x, int y){
