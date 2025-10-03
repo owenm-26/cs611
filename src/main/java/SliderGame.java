@@ -107,7 +107,7 @@ public class SliderGame extends Game{
         System.out.println("\n--- Sliding Puzzle ---");
         // Create a Player and get their name
         Player p = new Player("Player");
-        p.promptForName();
+        p.promptForName("What is your name young buck?");
 
         System.out.println("Now we'll figure out the dimensions of the board.");
         int[] dims = SliderGame.getDesiredBoardDimensions();

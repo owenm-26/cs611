@@ -47,8 +47,16 @@ public class Player {
         return "Player{name='" + name + "', score=" + score + ", turn=" + turn + "}";
     }
 
-    public void promptForName() {
-        System.out.println("What is your name young buck?");
+    public static void promptMultiplePlayersForNames(Player[] players){
+        int count = 1;
+        for(Player p: players){
+            String m = "What is your name player " + count + "?";
+            p.promptForName(m);
+
+        }
+    }
+    public void promptForName(String message) {
+        System.out.println(message);
         String s = Game.scanner.nextLine().trim();
 
         if (s.equals(Game.RESERVED_QUIT_KEYWORD)) {  

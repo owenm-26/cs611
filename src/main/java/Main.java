@@ -23,10 +23,7 @@ public final class Main {
 
             switch (choice) {
                 case 1: SliderGame.runSlider(); break;
-                case 2:
-                    System.out.println("\n--- Dots & Boxes ---");
-                    System.out.println("This game will be available soon. Returning to main menu...\n");
-                    break;
+                case 2: DABGame.runDAB(); break;
                 case 3:
                     System.out.println("Goodbye!");
                     return;
