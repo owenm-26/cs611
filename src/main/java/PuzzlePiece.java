@@ -1,16 +1,12 @@
-public class PuzzleTile extends Tile{
+public class PuzzlePiece extends Piece{
 
     public String content;
 
-    public String toString(){
-        return this.content;
-    }
-
-    public PuzzleTile(String content){
+    public PuzzlePiece(String content){
         this.content=content;
     }
 
-    public PuzzleTile(){
+    public PuzzlePiece(){
         this("-");
     }
     public String getContent(){

@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import java.util.Random;
 
 // INVARIANT: NO CHARACTERS IN THE SLIDER ARE THE SAME
-public class SliderBoard extends Board<PuzzleTile>{
+public class SliderBoard extends Board<Tile<PuzzlePiece>>{
     public int[] missing_tile;
     public static String MISSING_TILE_CONTENT=" ";
 
@@ -13,7 +13,7 @@ public class SliderBoard extends Board<PuzzleTile>{
 
     public SliderBoard(int w, int h, int x, int y){
         super(w,h);
-        board_arr = new PuzzleTile[h][w];
+        board_arr = new Tile[h][w];
 
         if (!valid_position(x,y)){
             throw new IllegalArgumentException(getInvalidPositionMessage(x,y));
@@ -46,7 +46,9 @@ public class SliderBoard extends Board<PuzzleTile>{
                     content = Integer.toString(tileContent);
                 }
                 int[] coordinates = {row, col};
-                board_arr[row][col] = new PuzzleTile(content);
+                board_arr[row][col] = new Tile();
+                board_arr[row][col].addPiece(new PuzzlePiece(content));
+
                 positions_map.put(content, coordinates);
             }
         }
@@ -69,8 +71,8 @@ public class SliderBoard extends Board<PuzzleTile>{
             index2 =random.nextInt(height*width-1)+1;
             randomCoordinates1 = new int[]{Math.floorDiv(index1, width), index1 % width};
             randomCoordinates2 = new int[]{Math.floorDiv(index2, width), index2 % width};
-            valueAtIndex1 = board_arr[randomCoordinates1[0]][randomCoordinates1[1]].getContent();
-            valueAtIndex2 = board_arr[randomCoordinates2[0]][randomCoordinates2[1]].getContent();
+            valueAtIndex1 = board_arr[randomCoordinates1[0]][randomCoordinates1[1]].getPiecesOnTile().get(0).getContent();
+            valueAtIndex2 = board_arr[randomCoordinates2[0]][randomCoordinates2[1]].getPiecesOnTile().get(0).getContent();
 
             // Case #1: they're the same value or one of them is the blank tile
             if(index1 == index2 || valueAtIndex1.equals(MISSING_TILE_CONTENT) || valueAtIndex2.equals(MISSING_TILE_CONTENT)){
@@ -97,10 +99,10 @@ public class SliderBoard extends Board<PuzzleTile>{
         int index = 0;
         for(int row=0; row < height; row++){
             for(int col=0; col< width; col++){
-                if(board_arr[row][col].getContent().equals(MISSING_TILE_CONTENT)){
+                if(board_arr[row][col].getPiecesOnTile().get(0).getContent().equals(MISSING_TILE_CONTENT)){
                     continue;
                 }
-                flattenedBoardArr[index] = board_arr[row][col].getContent();
+                flattenedBoardArr[index] = board_arr[row][col].getPiecesOnTile().get(0).getContent();
                 index++;
             }
         }
@@ -159,7 +161,7 @@ public class SliderBoard extends Board<PuzzleTile>{
             if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
                 int[] coordinates = new int[2];
                 coordinates[0] = nx; coordinates[1] = ny;
-                neighbors_keys.put(board_arr[nx][ny].getContent(), coordinates);
+                neighbors_keys.put(board_arr[nx][ny].getPiecesOnTile().get(0).getContent(), coordinates);
             }
         }
 
@@ -172,8 +174,8 @@ public class SliderBoard extends Board<PuzzleTile>{
         }
 
 
-        String tile1_content = board_arr[tile1_coordinates[0]][tile1_coordinates[1]].getContent();
-        String tile2_content = board_arr[tile2_coordinates[0]][tile2_coordinates[1]].getContent();
+        String tile1_content = board_arr[tile1_coordinates[0]][tile1_coordinates[1]].getPiecesOnTile().get(0).getContent();
+        String tile2_content = board_arr[tile2_coordinates[0]][tile2_coordinates[1]].getPiecesOnTile().get(0).getContent();
 
         System.out.println("Swapping values. " + tile1_content + "<-->" + tile2_content);
 
@@ -185,8 +187,10 @@ public class SliderBoard extends Board<PuzzleTile>{
             slide_tile(tile1_content);
         }
         else{
-            board_arr[tile2_coordinates[0]][tile2_coordinates[1]].setContent(tile1_content);
-            board_arr[tile1_coordinates[0]][tile1_coordinates[1]].setContent(tile2_content);
+//            board_arr[tile2_coordinates[0]][tile2_coordinates[1]].setContent(tile1_content);
+            board_arr[tile2_coordinates[0]][tile2_coordinates[1]].getPiecesOnTile().get(0).setContent(tile1_content);
+
+            board_arr[tile1_coordinates[0]][tile1_coordinates[1]].getPiecesOnTile().get(0).setContent(tile2_content);
         }
 
     }
@@ -200,9 +204,9 @@ public class SliderBoard extends Board<PuzzleTile>{
         int[] to_be_swapped_coordinates = valid_swap_tiles.get(key_to_swap_with);
 
         // Swap the contents of the tiles
-        String temp_content = board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getContent();
-        board_arr[missing_tile[0]][missing_tile[1]].setContent(temp_content);
-        board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].setContent(MISSING_TILE_CONTENT);
+        String temp_content = board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getPiecesOnTile().get(0).getContent();
+        board_arr[missing_tile[0]][missing_tile[1]].getPiecesOnTile().get(0).setContent(temp_content);
+        board_arr[to_be_swapped_coordinates[0]][to_be_swapped_coordinates[1]].getPiecesOnTile().get(0).setContent(MISSING_TILE_CONTENT);
 
         // Update missing tile to be the coordinates of the new empty tile
         setMissingTile(to_be_swapped_coordinates[0], to_be_swapped_coordinates[1]);
@@ -229,7 +233,7 @@ public class SliderBoard extends Board<PuzzleTile>{
             System.out.println(horizontal); // print a horizontal above
             System.out.print("|"); // The leftmost vertical bar
             for(int col=0; col < width; col++){
-                String content = board_arr[row][col].getContent();
+                String content = board_arr[row][col].getPiecesOnTile().get(0).getContent();
                 String formatted = String.format(" %" + cellWidth + "s ", content);
                 System.out.print(formatted + "|");
             }
