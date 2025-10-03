@@ -36,7 +36,6 @@ public class DABBoard extends Board<ConnectionsTile>{
         return "Dots & Boxes requires at least 3×3 dots and at most 9×9.";
     }
 
-    // TODO: Implement Print Board
     public void printCurrentBoard() {
         final String H_NONE = "   ";         
         StringBuilder sb = new StringBuilder();
@@ -72,14 +71,6 @@ public class DABBoard extends Board<ConnectionsTile>{
         System.out.println();
     }
 
-    @Override
-    protected boolean valid_position(int r, int c) {
-        return r >= 0 && r < height && c >= 0 && c < width;
-    }
-
-
-    // TODO: Implement "getValidConnections()" to check if a line can be drawn validly
-    //  - inspired by getEligibleSwapCharacters() in SlideBoard
     public HashMap<String, int[]> getValidConnections(int row, int col) {
         HashMap<String, int[]> map = new HashMap<>();
 
@@ -105,8 +96,6 @@ public class DABBoard extends Board<ConnectionsTile>{
         return map;
     }
 
-    // TODO: Implement "makeConnection()" which should use getValidConnections()
-    //  and should make a two-way connection between the tiles
 
     public int makeConnection(int r1, int c1, int r2, int c2, Player owner) {
         if (!valid_position(r1, c1) || !valid_position(r2, c2))
@@ -147,6 +136,14 @@ public class DABBoard extends Board<ConnectionsTile>{
         return completed;
     }
 
+    /** Is the unit box with top-left dot (br,bc) fully enclosed? */
+    private boolean boxComplete(int br, int bc) {
+        return hasHEdge(br, bc)           // top
+            && hasHEdge(br + 1, bc)       // bottom
+            && hasVEdge(br, bc)           // left
+            && hasVEdge(br, bc + 1);      // right
+    }
+
     private boolean hasHEdge(int r, int c) {
         // edge between (r,c) and (r,c+1)
         ConnectionsTile left = board_arr[r][c];
@@ -159,14 +156,6 @@ public class DABBoard extends Board<ConnectionsTile>{
         ConnectionsTile top = board_arr[r][c];
         ConnectionsTile bottom = board_arr[r + 1][c];
         return top != null && bottom != null && top.areConnected(bottom);
-    }
-
-    /** Is the unit box with top-left dot (br,bc) fully enclosed? */
-    private boolean boxComplete(int br, int bc) {
-        return hasHEdge(br, bc)           // top
-            && hasHEdge(br + 1, bc)       // bottom
-            && hasVEdge(br, bc)           // left
-            && hasVEdge(br, bc + 1);      // right
     }
 
 
