@@ -25,7 +25,7 @@ public class DABGame extends Game{
         Player.promptMultiplePlayersForNames(players);
 
         System.out.println("Now we'll figure out the dimensions of the board.");
-        int[] dims = DABGame.getDesiredBoardDimensions();
+        int[] dims = DABGame.getDesiredBoardDimensions(new DABValidator());
         new DABGame(dims[0], dims[1], players); // SliderGame runs its own lifecycle
         System.out.println();
     }

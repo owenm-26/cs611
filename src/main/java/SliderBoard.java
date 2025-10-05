@@ -164,11 +164,6 @@ public class SliderBoard extends Board<PuzzlePiece>{
         return neighbors_keys;
     }
 
-    @Override
-    protected boolean valid_position(int x, int y) {
-        return super.valid_position(x, y);
-    }
-
     protected void swap_tiles(int[] tile1_coordinates, int[] tile2_coordinates){
         if (tile1_coordinates.length != tile2_coordinates.length && tile1_coordinates.length != 2){
             throw new IllegalArgumentException("Coordinate lists must be 2 elements long");

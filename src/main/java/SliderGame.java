@@ -110,7 +110,7 @@ public class SliderGame extends Game{
         p.promptForName("What is your name young buck?");
 
         System.out.println("Now we'll figure out the dimensions of the board.");
-        int[] dims = SliderGame.getDesiredBoardDimensions();
+        int[] dims = SliderGame.getDesiredBoardDimensions(new SliderValidator());
         new SliderGame(dims[0], dims[1], p.getName()); // SliderGame runs its own lifecycle
         System.out.println();
     }

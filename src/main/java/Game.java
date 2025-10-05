@@ -40,7 +40,7 @@ public abstract class Game {
         }
     }
 
-    protected static int[] getDesiredBoardDimensions(){
+    protected static int[] getDesiredBoardDimensions(DimensionValidator validator){
         System.out.println("First give me your desired width: ");
         String userInputtedWidth = scanner.nextLine();
         System.out.println("Great now give me the desired height: ");
@@ -49,17 +49,17 @@ public abstract class Game {
         try{
             width = Integer.parseInt(userInputtedWidth);
             height = Integer.parseInt(userInputtedHeight);
-            if (!Board.valid_dimension(width, height)) {
+            if (!validator.isValidDimensions(width, height)) {
                 throw new IllegalArgumentException();
             }
             int[] dimensions = {width, height};
             return dimensions;
         }catch (NumberFormatException e){
             System.out.println("Oops, looks like you entered non-integers. Please try again.");
-            return getDesiredBoardDimensions();
+            return getDesiredBoardDimensions(validator);
         }catch (IllegalArgumentException e){
-            System.out.println(Board.getInvalidDimensionMessage() + " Please try again.");
-            return getDesiredBoardDimensions();
+            System.out.println(validator.getInvalidDimensionMessage() + " Please try again.");
+            return getDesiredBoardDimensions(validator);
         }
 
     }

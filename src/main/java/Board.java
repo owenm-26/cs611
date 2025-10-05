@@ -44,9 +44,9 @@ public abstract class Board<T extends Piece> {
         return width_valid && height_valid;
     }
 
-    public static String getInvalidDimensionMessage() {
-        return "Dimensions must be greater than 2 and less than 10.";
-    }
+//    public static String getInvalidDimensionMessage() {
+//        return "Dimensions must be greater than 2 and less than 10.";
+//    }
 
     protected String getInvalidPositionMessage(int x, int y) {
         return String.format("Tile must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d. You gave positions (%d, %d)", this.width, this.height,x,y);

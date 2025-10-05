@@ -50,7 +50,7 @@ public class Player {
     public static void promptMultiplePlayersForNames(Player[] players){
         int count = 1;
         for(Player p: players){
-            String m = "What is your name player " + count + "?";
+            String m = "What is your name player " + count++ + "?";
             p.promptForName(m);
 
         }
