@@ -1,3 +1,5 @@
+/* DABBoard.java — board for Dots & Boxes: tracks edges/owners, validates moves, renders state. */
+
 import java.util.HashMap;
 import java.util.Map;
 
