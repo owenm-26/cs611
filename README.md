@@ -18,7 +18,7 @@ Below are the components that make up my solution.
 The Design document and related documentation can be found in [/documentation](/documentation)
 
 ## I/O Example
-See [Sliding Game I/O Example File](documentation/sliding_game_io_example.txt)
+See [Sliding Game I/O Example File](documentation/sliding-game-documentation/sliding_game_io_example.txt)
 
 ## Compiling & Running Directions
 This a Maven project so the compilation is made easy for us. Follow the commands below:
