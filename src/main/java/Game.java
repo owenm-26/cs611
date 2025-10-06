@@ -1,3 +1,6 @@
+/* Game.java — abstract game loop + shared I/O/quit handling.
+ * Holds players & board dims; subclasses implement executeNextMove(), checkWin(), endGame(). */
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Scanner;

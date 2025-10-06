@@ -1,3 +1,5 @@
+/* GameLauncher.java — menu loop and router for games; handles QUIT input. */
+
 import java.util.Scanner;
 
 public final class GameLauncher {

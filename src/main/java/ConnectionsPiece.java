@@ -1,4 +1,7 @@
-import java.util.HashSet;
+/* ConnectionsPiece.java — node for Dots & Boxes graph.
+ * Tracks up to 4 connections and checks adjacency between pieces. */
+
+ import java.util.HashSet;
 public class ConnectionsPiece extends Piece{
     private HashSet<ConnectionsPiece> connectedPieces;
 
