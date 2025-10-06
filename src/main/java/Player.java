@@ -1,3 +1,5 @@
+/* Player.java — player state (name/score/turn), name input, unique display initial. */
+
 import java.util.HashSet;
 import java.util.Set;
 

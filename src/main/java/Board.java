@@ -1,3 +1,5 @@
+/* Board.java — generic abstract grid board with validation hooks. */
+
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
