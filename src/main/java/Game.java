@@ -84,7 +84,7 @@ public abstract class Game {
     }
 
     protected void playGame(Board gameboard){
-        turn_count = 0;
+        turn_count = 0; // TODO: Move this to be an aspect of each player
         boolean has_won = false;
         gameboard.printCurrentBoard();
 

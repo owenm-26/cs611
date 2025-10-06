@@ -35,7 +35,7 @@ public class Player {
     }
 
     public boolean getTurn() {
-        return turn;
+        return this.turn;
     }
 
     public void setTurn(boolean turn) {
