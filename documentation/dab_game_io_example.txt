@@ -1,0 +1,140 @@
+--- Welcome to CS611 Games ---
+You can quit anytime by typing 'QUIT'.
+
+Select a game:
+[1] Sliding Puzzle
+[2] Dots & Boxes
+[3] Quit
+Enter choice: 2
+
+--- Dots and Boxes ---
+What is your name player 1?
+Alim
+What is your name player 2?
+Alim
+Name already taken. Please choose another name.
+What is your name player 2?
+Owen
+Now we'll figure out the dimensions of the board.
+First give me your desired width: 
+3
+Great now give me the desired height: 
+3
+--- Welcome to the Dots and Boxes! ---You can quit anytime by entering 'QUIT' as your input for any question (except the next one)
+
+*   *   *
+         
+*   *   *
+         
+*   *   *
+
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 2,2
+Owen (O) :: Enter the direction of the connection [U,L]:U
+*   *   *
+         
+*   *   *
+        O
+*   *   *
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 0,0
+Alim (A) :: Enter the direction of the connection [R,D]:d
+*   *   *
+A        
+*   *   *
+        O
+*   *   *
+
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,1
+Owen (O) :: Enter the direction of the connection [R,D,U,L]:u
+*   *   *
+A   O    
+*   *   *
+        O
+*   *   *
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,0
+Alim (A) :: Enter the direction of the connection [R,D]:d
+*   *   *
+A   O    
+*   *   *
+A       O
+*   *   *
+
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,1
+Owen (O) :: Enter the direction of the connection [R,D,L]:r
+*   *   *
+A   O    
+*   *-O-*
+A       O
+*   *   *
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 2,0
+Alim (A) :: Enter the direction of the connection [R]:r
+*   *   *
+A   O    
+*   *-O-*
+A       O
+*-A-*   *
+
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 2,2
+Owen (O) :: Enter the direction of the connection [L]:l
+*   *   *
+A   O    
+*   *-O-*
+A       O
+*-A-*-O-*
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 2,1
+Alim (A) :: Enter the direction of the connection [U]:u
+*   *   *
+A   O    
+*   *-O-*
+A   A   O
+*-A-*-O-*
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,0
+Alim (A) :: Enter the direction of the connection [R]:r
+*   *   *
+A   O    
+*-A-*-O-*
+A   A   O
+*-A-*-O-*
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 0,0
+Alim (A) :: Enter the direction of the connection [R]:r
+*-A-*   *
+A   O    
+*-A-*-O-*
+A   A   O
+*-A-*-O-*
+
+Alim (A) :: Enter the coordinates of the source dot [Ex: 2,2]: 0,1
+Alim (A) :: Enter the direction of the connection [R]:r
+*-A-*-A-*
+A   O    
+*-A-*-O-*
+A   A   O
+*-A-*-O-*
+
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,1
+(-) Node already has all outgoing connections made. No new connections possible.
+Owen (O) :: Enter the coordinates of the source dot [Ex: 2,2]: 1,2
+Owen (O) :: Enter the direction of the connection [U]:u
+*-A-*-A-*
+A   O   O
+*-A-*-O-*
+A   A   O
+*-A-*-O-*
+
+------- Game Over! -------
+🏆 Alim wins!!!
+Final Score:
+Alim - 3
+Owen - 1
+
+Select a game:
+[1] Sliding Puzzle
+[2] Dots & Boxes
+[3] Quit
+Enter choice: 3
+Goodbye!
