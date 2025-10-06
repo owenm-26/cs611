@@ -28,11 +28,8 @@ Below are the components that make up the solution.
 └── DimensionValidator.java
 ```
 
-## Notes
-The Design document and related documentation can be found in [/documentation](/documentation)
-
-## I/O Example
-See [Sliding Game I/O Example File](documentation/sliding-game-documentation/sliding_game_io_example.txt)
+## Notes 
+The Design documents, UML Diagrams, and I/O Examples can be found in [/documentation](/documentation) and its subfolders
 
 ### New Features  
 - **GameLauncher** — centralized menu to start either Sliding Puzzle or Dots & Boxes.  
