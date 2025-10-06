@@ -29,7 +29,9 @@ public class DABGame extends Game{
         while(true){
             try{
                 System.out.printf("%s :: Enter the coordinates of the source dot [Ex: %d,%d]: ", p.getName(), gameboard.width-1, gameboard.height-1);
-                String[] parts = scanner.nextLine().split(",");
+                String inputLine = scanner.nextLine();
+                quitIfRequested(inputLine);
+                String[] parts = inputLine.split(",");
                 if (parts.length != 2) {
                     throw new IllegalArgumentException("Invalid input format");
                 }
@@ -68,6 +70,7 @@ public class DABGame extends Game{
             try{
                 System.out.printf("%s :: Enter the direction of the connection %s:", p.getName(), sb);
                 direction = scanner.next().toUpperCase();
+                quitIfRequested(direction);
                 scanner.nextLine();
                 if (!validConnections.containsKey(direction)){
                     throw new IllegalArgumentException("Not a valid direction choice");
