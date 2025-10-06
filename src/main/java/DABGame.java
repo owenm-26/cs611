@@ -26,9 +26,10 @@ public class DABGame extends Game{
         }
         int[] coordinates = new int[2];
         HashMap<String, int[]> validConnections;
+        String playerUsername = String.format("%s (%s)", p.getName(), p.getInitial());
         while(true){
             try{
-                System.out.printf("%s :: Enter the coordinates of the source dot [Ex: %d,%d]: ", p.getName(), gameboard.width-1, gameboard.height-1);
+                System.out.printf("%s :: Enter the coordinates of the source dot [Ex: %d,%d]: ", playerUsername, gameboard.width-1, gameboard.height-1);
                 String inputLine = scanner.nextLine();
                 quitIfRequested(inputLine);
                 String[] parts = inputLine.split(",");
@@ -68,7 +69,7 @@ public class DABGame extends Game{
         String direction;
         while(true){
             try{
-                System.out.printf("%s :: Enter the direction of the connection %s:", p.getName(), sb);
+                System.out.printf("%s :: Enter the direction of the connection %s:", playerUsername, sb);
                 direction = scanner.next().toUpperCase();
                 quitIfRequested(direction);
                 scanner.nextLine();
