@@ -98,7 +98,12 @@ public class DABGame extends Game{
         // check if the total number of boxes == the total possible number of boxes
         return completedBoxes == (this.board_width-1) * (this.board_height-1);
     }
-    public void endGame(){}
+    public void endGame(){
+        int winnerIndex =  players[0].getScore() > players[1].getScore() ? 0 : 1;
+        System.out.println("------- Game Over! -------");
+        System.out.format("🏆 %s wins!!!\n", players[winnerIndex].getName());
+        System.out.format("Final Score:\n%s - %d\n%s - %d\n", players[winnerIndex].getName(), (int)players[winnerIndex].getScore(), players[(winnerIndex+1) % 2].getName(), (int)players[(winnerIndex+1) % 2].getScore());
+    }
 
     // TODO: Refactor this into Game class and have it take params like gameName
     //  and numPlayers and initialize game with an array of Players

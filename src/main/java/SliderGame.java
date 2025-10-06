@@ -22,6 +22,7 @@ public class SliderGame extends Game{
         while (true){
             System.out.print(message);
             keyToSwapWith = scanner.next();
+            scanner.nextLine();
 
             quitIfRequested(keyToSwapWith);
 
@@ -68,39 +69,39 @@ public class SliderGame extends Game{
 
         // Ask if they want to play again or quit
         System.out.println(goodGameMessage);
-//        Main.main(new String[]{""});
-        System.out.println("\nEnter the number corresponding to your choice:\n[1] Play again\n[2] Quit");
-        String selection;
-        int number;
-        while(true){
-            selection = scanner.next();
-            try{
-                number = Integer.parseInt(selection);
-                if (number < 1 || number > 2){
-                    System.out.println("Invalid Option selected. Please try again.");
-                }
-                else{
-                    break;
-                }
-            }catch (NumberFormatException e){
-                System.out.println("Entry must be a number. Please try again.");
-            }
-
-        }
-
-        switch(number){
-            case 1: {
-                gameboard.populateBoard();
-                playGame(gameboard);
-            }
-            case 2:{
-                System.out.println("Hope to see you again soon!");
-                System.exit(0);
-            }
-            default:{
-                throw new IllegalArgumentException("Something went wrong with your input.");
-            }
-        }
+////        Main.main(new String[]{""});
+//        System.out.println("\nEnter the number corresponding to your choice:\n[1] Play again\n[2] Quit");
+//        String selection;
+//        int number;
+//        while(true){
+//            selection = scanner.next();
+//            try{
+//                number = Integer.parseInt(selection);
+//                if (number < 1 || number > 2){
+//                    System.out.println("Invalid Option selected. Please try again.");
+//                }
+//                else{
+//                    break;
+//                }
+//            }catch (NumberFormatException e){
+//                System.out.println("Entry must be a number. Please try again.");
+//            }
+//
+//        }
+//
+//        switch(number){
+//            case 1: {
+//                gameboard.populateBoard();
+//                playGame(gameboard);
+//            }
+//            case 2:{
+//                System.out.println("Hope to see you again soon!");
+//                System.exit(0);
+//            }
+//            default:{
+//                throw new IllegalArgumentException("Something went wrong with your input.");
+//            }
+//        }
 
     }
 
