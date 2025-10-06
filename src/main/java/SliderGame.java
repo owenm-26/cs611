@@ -68,6 +68,7 @@ public class SliderGame extends Game{
 
         // Ask if they want to play again or quit
         System.out.println(goodGameMessage);
+//        Main.main(new String[]{""});
         System.out.println("\nEnter the number corresponding to your choice:\n[1] Play again\n[2] Quit");
         String selection;
         int number;

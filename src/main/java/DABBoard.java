@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class DABBoard extends Board<ConnectionsPiece>{
 
@@ -6,6 +7,18 @@ public class DABBoard extends Board<ConnectionsPiece>{
     // Vertical edge between (r,c) and (r+1,c)    -> vOwner[r][c]
     private Player[][] hOwner; // [height][width-1]
     private Player[][] vOwner; // [height-1][width]
+
+    final static int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+    final static String[] KEYS = { "U", "D", "L", "R" };
+
+    final static Map<String, int[]> KEYS_TO_DIR = new HashMap<>();
+
+    static {
+        KEYS_TO_DIR.put("U", new int[]{-1, 0});
+        KEYS_TO_DIR.put("D", new int[]{1, 0});
+        KEYS_TO_DIR.put("L", new int[]{0, -1});
+        KEYS_TO_DIR.put("R", new int[]{0, 1});
+    };
 
     public DABBoard(int w, int h){
         super(w,h);
@@ -50,7 +63,7 @@ public class DABBoard extends Board<ConnectionsPiece>{
         for (int r = 0; r < height; r++) {
             sb.setLength(0);
             for (int c = 0; c < width; c++) {
-                sb.append('o');
+                sb.append('*');
                 if (c < width - 1) {
                     Player owner = hOwner[r][c];
                     if (owner == null) {
@@ -84,9 +97,6 @@ public class DABBoard extends Board<ConnectionsPiece>{
         ConnectionsPiece a = board_arr[row][col].getPiecesOnTile().get(0);
         if (a == null) return map;
 
-        final int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
-        final String[] KEYS = { "U", "D", "L", "R" };
-
         for (int i = 0; i < 4; i++) {
             int nr = row + DIRS[i][0];
             int nc = col + DIRS[i][1];
@@ -95,8 +105,8 @@ public class DABBoard extends Board<ConnectionsPiece>{
             ConnectionsPiece b = board_arr[nr][nc].getPiecesOnTile().get(0);
             if (b == null) continue;
 
-
-            if (ConnectionsPiece.piecesAreConnected(a,b)) {
+            // not connected, thus a valid option
+            if (!ConnectionsPiece.piecesAreConnected(a,b)) {
                 map.put(KEYS[i], new int[]{nr, nc});
             }
         }
@@ -106,8 +116,9 @@ public class DABBoard extends Board<ConnectionsPiece>{
     public int makeConnection(int r1, int c1, int r2, int c2, Player owner) {
         if (!valid_position(r1, c1) || !valid_position(r2, c2))
             throw new IllegalArgumentException("Out of bounds.");
-        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) != 1)
+        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) != 1) {
             throw new IllegalArgumentException("Dots must be orthogonal neighbors.");
+        }
 
         ConnectionsPiece a = board_arr[r1][c1].getPiecesOnTile().get(0);
         ConnectionsPiece b = board_arr[r2][c2].getPiecesOnTile().get(0);
