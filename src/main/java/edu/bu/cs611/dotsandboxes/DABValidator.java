@@ -1,3 +1,7 @@
+package edu.bu.cs611.dotsandboxes;
+
+import edu.bu.cs611.core.validator.DimensionValidator;
+
 public class DABValidator implements DimensionValidator {
     @Override
     public boolean isValidDimensions(int width, int height) {

@@ -1,3 +1,8 @@
+package edu.bu.cs611.slider;
+
+import edu.bu.cs611.core.Board;
+import edu.bu.cs611.core.Tile;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -5,7 +10,7 @@ import java.util.stream.IntStream;
 import java.util.Random;
 
 // INVARIANT: NO CHARACTERS IN THE SLIDER ARE THE SAME
-public class SliderBoard extends Board<PuzzlePiece>{
+public class SliderBoard extends Board<PuzzlePiece> {
     public int[] missing_tile;
     public static String MISSING_TILE_CONTENT=" ";
 

@@ -1,9 +1,13 @@
-/* DABBoard.java — board for Dots & Boxes: tracks edges/owners, validates moves, renders state. */
+package edu.bu.cs611.dotsandboxes;/* DABBoard.java — board for Dots & Boxes: tracks edges/owners, validates moves, renders state. */
+
+import edu.bu.cs611.core.Board;
+import edu.bu.cs611.core.Player;
+import edu.bu.cs611.core.Tile;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DABBoard extends Board<ConnectionsPiece>{
+public class DABBoard extends Board<ConnectionsPiece> {
 
     // Horizontal edge between (r,c) and (r,c+1)  -> hOwner[r][c]
     // Vertical edge between (r,c) and (r+1,c)    -> vOwner[r][c]

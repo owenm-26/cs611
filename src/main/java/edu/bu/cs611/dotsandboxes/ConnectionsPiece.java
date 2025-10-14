@@ -1,8 +1,10 @@
-/* ConnectionsPiece.java — node for Dots & Boxes graph.
+package edu.bu.cs611.dotsandboxes;/* ConnectionsPiece.java — node for Dots & Boxes graph.
  * Tracks up to 4 connections and checks adjacency between pieces. */
 
+ import edu.bu.cs611.core.Piece;
+
  import java.util.HashSet;
-public class ConnectionsPiece extends Piece{
+public class ConnectionsPiece extends Piece {
     private HashSet<ConnectionsPiece> connectedPieces;
 
     public ConnectionsPiece(){

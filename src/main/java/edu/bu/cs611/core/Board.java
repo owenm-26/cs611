@@ -1,4 +1,4 @@
-/* Board.java — generic abstract grid board with validation hooks. */
+package edu.bu.cs611.core;/* Board.java — generic abstract grid board with validation hooks. */
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public abstract class Board<T extends Piece> {
 //        return "Dimensions must be greater than 2 and less than 10.";
 //    }
 
-    protected String getInvalidPositionMessage(int x, int y) {
+    public String getInvalidPositionMessage(int x, int y) {
         return String.format("Tile must be inside the dimensions of the board, zero-indexed. Dimensions are %d x %d. You gave positions (%d, %d)", this.width, this.height,x,y);
     }
 

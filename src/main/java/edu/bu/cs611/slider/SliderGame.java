@@ -1,4 +1,9 @@
-public class SliderGame extends Game{
+package edu.bu.cs611.slider;
+
+import edu.bu.cs611.core.Game;
+import edu.bu.cs611.core.Player;
+
+public class SliderGame extends Game {
     public SliderBoard gameboard;
 
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){
