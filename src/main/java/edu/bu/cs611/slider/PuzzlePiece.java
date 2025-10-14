@@ -1,4 +1,8 @@
-public class PuzzlePiece extends Piece{
+package edu.bu.cs611.slider;
+
+import edu.bu.cs611.core.Piece;
+
+public class PuzzlePiece extends Piece {
 
     public String content;
 

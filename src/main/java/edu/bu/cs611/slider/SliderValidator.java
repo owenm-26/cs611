@@ -1,4 +1,8 @@
-public class SliderValidator implements DimensionValidator{
+package edu.bu.cs611.slider;
+
+import edu.bu.cs611.core.validator.DimensionValidator;
+
+public class SliderValidator implements DimensionValidator {
     @Override
     public boolean isValidDimensions(int width, int height) {
         return width >= 2 && width <= 10 && height >= 2 && height <= 10;

@@ -1,4 +1,7 @@
-/* GameLauncher.java — menu loop and router for games; handles QUIT input. */
+package edu.bu.cs611.core;/* GameLauncher.java — menu loop and router for games; handles QUIT input. */
+
+import edu.bu.cs611.dotsandboxes.DABGame;
+import edu.bu.cs611.slider.SliderGame;
 
 import java.util.Scanner;
 

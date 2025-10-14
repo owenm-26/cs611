@@ -1,3 +1,5 @@
+package edu.bu.cs611.core;
+
 import java.util.ArrayList;
 
 public class Tile<T extends Piece> {
