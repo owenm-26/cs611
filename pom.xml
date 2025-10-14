@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>Main</mainClass>
+                    <mainClass>edu.bu.cs611.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

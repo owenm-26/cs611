@@ -1,3 +1,5 @@
+package edu.bu.cs611;
+
 import edu.bu.cs611.core.GameLauncher;
 
 public final class Main {
