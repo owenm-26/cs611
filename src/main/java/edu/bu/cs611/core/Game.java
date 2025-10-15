@@ -10,7 +10,8 @@ public abstract class Game {
     //TODO: Add to this enum everytime you add a new "Board" child
     public enum GameType {
         SLIDER,
-        DOTS_AND_BOXES
+        DOTS_AND_BOXES,
+        QUORIDOR
     }
 
     public int board_width;

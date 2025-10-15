@@ -5,7 +5,7 @@ import edu.bu.cs611.core.validator.DimensionValidator;
 public class QuoridorValidator implements DimensionValidator {
     @Override
     public boolean isValidDimensions(int width, int height) {
-        return width >= 3 && width <= 9 && height >= 3 && height <= 9;
+        return width == 9 && height == 9;
     }
 
     public boolean isValidPosition(int x, int y){
