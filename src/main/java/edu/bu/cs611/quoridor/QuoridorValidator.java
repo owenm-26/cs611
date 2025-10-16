@@ -14,6 +14,14 @@ public class QuoridorValidator implements DimensionValidator {
 
     @Override
     public String getInvalidDimensionMessage() {
-        return "Dots and Boxes boards must be between 3x3 and 9x9.";
+        return "Dots and Boxes boards must be 9x9.";
+    }
+
+    public static boolean isValidHorizontalEdge(int row, int col) {
+        return row >= 0 && row < 8 && col >= 0 && col < 9;
+    }
+
+    public static boolean isValidVerticalEdge(int row, int col) {
+        return row >= 0 && row < 9 && col >= 0 && col < 8;
     }
 }

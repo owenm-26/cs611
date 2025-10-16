@@ -72,27 +72,27 @@ public class QuoridorBoard extends Board<QuoridorPlayerPiece> {
     }
     
     public boolean isHorizontalEdgeBlocked(int row, int col) {
-        if (row >= 0 && row < height - 1 && col >= 0 && col < width) {
+        if (QuoridorValidator.isValidHorizontalEdge(row, col)) {
             return horizontalEdges[row][col].getIsBlocked();
         }
         return false;
     }
-    
+
     public boolean isVerticalEdgeBlocked(int row, int col) {
-        if (row >= 0 && row < height && col >= 0 && col < width - 1) {
+        if (QuoridorValidator.isValidVerticalEdge(row, col)) {
             return verticalEdges[row][col].getIsBlocked();
         }
         return false;
     }
-    
+
     private void blockHorizontalEdge(int row, int col) {
-        if (row >= 0 && row < height - 1 && col >= 0 && col < width) {
+        if (QuoridorValidator.isValidHorizontalEdge(row, col)) {
             horizontalEdges[row][col].setBlocked(true);
         }
     }
-    
+
     private void blockVerticalEdge(int row, int col) {
-        if (row >= 0 && row < height && col >= 0 && col < width - 1) {
+        if (QuoridorValidator.isValidVerticalEdge(row, col)) {
             verticalEdges[row][col].setBlocked(true);
         }
     }
