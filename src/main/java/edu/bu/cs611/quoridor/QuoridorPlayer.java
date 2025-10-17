@@ -1,17 +1,17 @@
 package edu.bu.cs611.quoridor;
 
-import edu.bu.cs611.core.Piece;
 import edu.bu.cs611.core.Player;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 
 import java.util.ArrayList;
 
-public class QuoridorPlayerPiece extends Piece {
+public class QuoridorPlayer extends Player {
     private Player player;
     private int wallsLeft;
     private int[] startingCoordinates;
 
-    public QuoridorPlayerPiece(String name, int wallBudget, int[] startingCoordinates){
+    public QuoridorPlayer(String name, int wallBudget, int[] startingCoordinates){
+        super(name);
         validateStartingCoordinates(startingCoordinates);
         validateWallBudget(wallBudget);
 
@@ -63,7 +63,7 @@ public class QuoridorPlayerPiece extends Piece {
 
     public boolean isWinningArea(int[] coordinates){
         /*
-          Returns whether or not the current coordinates meets the objective of the player
+          Returns whether the current coordinates meet the objective of the player
          */
         ArrayList<Integer> extremes = new ArrayList<>(); // the edges of the board
         extremes.add(0);

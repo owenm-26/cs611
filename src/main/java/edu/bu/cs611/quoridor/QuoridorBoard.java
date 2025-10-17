@@ -6,7 +6,7 @@ import edu.bu.cs611.core.Tile;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QuoridorBoard extends Board<QuoridorPlayerPiece> {
+public class QuoridorBoard extends Board<QuoridorPiece> {
     private EdgePiece[][] horizontalEdges;
     private EdgePiece[][] verticalEdges;
     
@@ -39,10 +39,10 @@ public class QuoridorBoard extends Board<QuoridorPlayerPiece> {
     }
     
     private void initializeBoard() {
-        board_arr = (Tile<QuoridorPlayerPiece>[][]) new Tile[height][width];
+        board_arr = (Tile<QuoridorPiece>[][]) new Tile[height][width];
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
-                board_arr[r][c] = new Tile<QuoridorPlayerPiece>();
+                board_arr[r][c] = new Tile<QuoridorPiece>();
             }
         }
     }
@@ -63,11 +63,11 @@ public class QuoridorBoard extends Board<QuoridorPlayerPiece> {
         }
     }
     
-    public int[] getPlayerPosition(QuoridorPlayerPiece player) {
+    public int[] getPlayerPosition(QuoridorPlayer player) {
         return positions_map.get(getPlayerKey(player));
     }
     
-    private String getPlayerKey(QuoridorPlayerPiece player) {
+    private String getPlayerKey(QuoridorPlayer player) {
         return player.toString();
     }
     
@@ -106,7 +106,7 @@ public class QuoridorBoard extends Board<QuoridorPlayerPiece> {
         return new HashMap<>();
     }
     
-    public void movePlayer(QuoridorPlayerPiece player, int toRow, int toCol) {
+    public void movePlayer(QuoridorPlayer player, int toRow, int toCol) {
         // TODO: Implement player movement
         // - Get current position
         // - Remove player from old tile

@@ -5,9 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a50df29-3ccf-4431-b8a1-ded43b0e7fbe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/bu/cs611/quoridor/EdgePiece.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/bu/cs611/quoridor/QuoridorPlayerPiece.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/bu/cs611/quoridor/QuoridorValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
