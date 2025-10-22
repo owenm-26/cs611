@@ -120,6 +120,8 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     public boolean hasPathToGoal(QuoridorPlayer p, int[] currentPos) throws InterruptedException {
         Queue<int[]> q = new Queue<>();
         q.enqueue(currentPos);
+        HashSet<int[]> seen = new HashSet<>();
+        seen.add(currentPos);
 
         int[] popped = new int[2];
         while(!q.isEmpty()){
@@ -127,22 +129,20 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
             for(String d: QuoridorBoard.KEYS_TO_DIR.keySet()){
                 int[] newSpace = {popped[0] + QuoridorBoard.KEYS_TO_DIR.get(d)[0], popped[1] + QuoridorBoard.KEYS_TO_DIR.get(d)[1]};
                 // skip if position out of bounds
-                if (!QuoridorValidator.isValidPosition(newSpace[0], newSpace[1])){
-                    continue;
-                }
+                if (!QuoridorValidator.isValidPosition(newSpace[0], newSpace[1])) continue;
+                // skip if already explored
+                if (seen.contains(newSpace)) continue;
 
-                // add to queue and to set if not blocked
-
+                // skip if blocked
                 //horizontal
-                if(!orientationIsVertical(d) && !isVerticalEdgeBlocked(newSpace[0], newSpace[1])){
-                    if(p.isWinningArea(newSpace)) return true;
-                    q.enqueue(newSpace);
-                }
+                if(!orientationIsVertical(d) && isVerticalEdgeBlocked(newSpace[0], newSpace[1])) continue;
                 //vertical
-                else if (orientationIsVertical(d) && !isHorizontalEdgeBlocked(newSpace[0], newSpace[1])){
-                    if(p.isWinningArea(newSpace)) return true;
-                    q.enqueue(newSpace);
-                }
+                else if (orientationIsVertical(d) && isHorizontalEdgeBlocked(newSpace[0], newSpace[1])) continue;
+
+                // add to queue and seen
+                if(p.isWinningArea(newSpace)) return true;
+                q.enqueue(newSpace);
+                seen.add(newSpace);
 
             }
         }
@@ -154,20 +154,60 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         return Arrays.asList(vertical).contains(orientation);
     }
 
-    public boolean canPlaceWall(int x, int y, String orientation) {
-        if(!QuoridorValidator.isValidOrientation(orientation)){
+    private HashMap<String,int[][]> getEdgeCoordinatesFromUserInput(int x, int y, String orientation){
+        /*
+        Helper method that consistently returns what the vertical or horizontal edges that would be blocked
+        would be after a user gives x,y, and orientation
+         */
+        // validate inputs
+        if(!QuoridorValidator.isValidOrientation(orientation))
             System.out.println(QuoridorValidator.getInvalidOrientationMessage());
+
+        HashMap<String, int[][]> res = new HashMap<>();
+        int[][] coordinates = new int[1][2];
+        switch (orientation){
+            case "U":
+                coordinates[0] = new int[]{x,y};
+                coordinates[1] = new int[]{x,y+1};
+                break;
+            case "D":
+                coordinates[0] = new int[]{x+1,y};
+                coordinates[1] = new int[]{x+1,y+1};
+                break;
+            case "L":
+                coordinates[0] = new int[]{x,y-1};
+                coordinates[1] = new int[]{x-1,y-1};
+                break;
+            case "R":
+                coordinates[0] = new int[]{x,y};
+                coordinates[1] = new int[]{x-1,y};
+                break;
         }
-        // TODO: Implement wall placement validation
-        // - Check grid bounds
-        if (orientationIsVertical(orientation)){
-            if (QuoridorValidator.isValidHorizontalEdge(x,y)) throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
+
+        // validate edges chosen from user
+        for(int[] edge: coordinates){
+            if (orientationIsVertical(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
+                throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
+
+            else if (!orientationIsVertical(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
+                throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
+        }
+
+        if(orientationIsVertical(orientation)){
+            res.put("H", coordinates);
         }
         else{
-            if (QuoridorValidator.isValidHorizontalEdge(x,y)) throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
+            res.put("V", coordinates);
         }
-        // - Check overlap with existing walls
-        // - Check 3-length wall merge
+        return res;
+    }
+
+    public boolean canPlaceWall(int x, int y, String orientation) {
+        // Validate arguments
+
+        // - Check overlap with existing walls (Check 3-length wall merge)
+
+
         // - Check path exists for all players (hasPathToGoal)
         return false;
     }
