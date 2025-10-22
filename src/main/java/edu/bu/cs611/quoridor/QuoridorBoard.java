@@ -13,21 +13,11 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     
     public static final int DEFAULT_SIZE = 9;
     
-    final static int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
-    final static String[] KEYS = { "U", "D", "L", "R" };
     public enum HorizontalOrVertical{
         HORIZONTAL,
         VERTICAL
     }
-    
-    final static Map<String, int[]> KEYS_TO_DIR = new HashMap<>();
-    
-    static {
-        KEYS_TO_DIR.put("U", new int[]{-1, 0});
-        KEYS_TO_DIR.put("D", new int[]{1, 0});
-        KEYS_TO_DIR.put("L", new int[]{0, -1});
-        KEYS_TO_DIR.put("R", new int[]{0, 1});
-    }
+
     
     public QuoridorBoard() {
         this(DEFAULT_SIZE, DEFAULT_SIZE);

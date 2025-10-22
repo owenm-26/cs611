@@ -14,18 +14,6 @@ public class DABBoard extends Board<ConnectionsPiece> {
     private Player[][] hOwner; // [height][width-1]
     private Player[][] vOwner; // [height-1][width]
 
-    final static int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
-    final static String[] KEYS = { "U", "D", "L", "R" };
-
-    final static Map<String, int[]> KEYS_TO_DIR = new HashMap<>();
-
-    static {
-        KEYS_TO_DIR.put("U", new int[]{-1, 0});
-        KEYS_TO_DIR.put("D", new int[]{1, 0});
-        KEYS_TO_DIR.put("L", new int[]{0, -1});
-        KEYS_TO_DIR.put("R", new int[]{0, 1});
-    };
-
     public DABBoard(int w, int h){
         super(w,h);
         board_arr = (Tile<ConnectionsPiece>[][]) new Tile[h][w];

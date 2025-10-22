@@ -1,7 +1,6 @@
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Player;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class QuoridorPlayer extends Player {
 
     private void validateStartingCoordinates(int[] startingCoordinates){
         if(startingCoordinates.length != 2){
-            throw new ValueException("Received coordinates not of length 2. Coordinates must be (x,y).");
+            throw new IllegalArgumentException("Received coordinates not of length 2. Coordinates must be (x,y).");
         }
         int x = startingCoordinates[0];
         int y = startingCoordinates[1];
@@ -28,12 +27,12 @@ public class QuoridorPlayer extends Player {
         QuoridorValidator v = new QuoridorValidator();
         if(!v.isValidPosition(x,y)){
             String m = String.format("Proposed position (%d, %d) is invalid for a quoridor position", x, y);
-            throw new ValueException(m);
+            throw new IllegalArgumentException(m);
         }
     }
     private void validateWallBudget(int budget){
         if(budget > 10 || budget < 5){
-            throw new ValueException("Wall budget must be between 5 and 10 inclusively.");
+            throw new IllegalArgumentException("Wall budget must be between 5 and 10 inclusively.");
         }
     }
 

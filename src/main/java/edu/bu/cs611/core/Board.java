@@ -2,6 +2,7 @@ package edu.bu.cs611.core;/* Board.java — generic abstract grid board with val
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class Board<T extends Piece> {
@@ -10,6 +11,17 @@ public abstract class Board<T extends Piece> {
 
     public Tile<T>[][] board_arr;
     public HashMap<String, int[]> positions_map;
+
+    public static final int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+    public static final String[] KEYS = { "U", "D", "L", "R" };
+    public static final Map<String, int[]> KEYS_TO_DIR = new HashMap<>();
+
+    static {
+        KEYS_TO_DIR.put("U", new int[]{-1, 0});
+        KEYS_TO_DIR.put("D", new int[]{1, 0});
+        KEYS_TO_DIR.put("L", new int[]{0, -1});
+        KEYS_TO_DIR.put("R", new int[]{0, 1});
+    }
 
     public Board(int w, int h){
         if (!(isValidDimension(w,h))){
