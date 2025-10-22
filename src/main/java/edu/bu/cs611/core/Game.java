@@ -77,6 +77,8 @@ public abstract class Game {
             case DOTS_AND_BOXES:
                 gameName = "Dots and Boxes";
                 break;
+            case QUORIDOR:
+                gameName = "Quoridor";
         }
         welcome(gameName);
         playGame(gameboard);

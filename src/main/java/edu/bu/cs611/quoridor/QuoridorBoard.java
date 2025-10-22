@@ -13,7 +13,7 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     private EdgePiece[][] horizontalEdges;
     private EdgePiece[][] verticalEdges;
     
-    private static final int DEFAULT_SIZE = 9;
+    public static final int DEFAULT_SIZE = 9;
     
     final static int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
     final static String[] KEYS = { "U", "D", "L", "R" };

@@ -6,7 +6,6 @@ import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import java.util.ArrayList;
 
 public class QuoridorPlayer extends Player {
-    private Player player;
     private int wallsLeft;
     private int[] startingCoordinates;
 
@@ -15,7 +14,6 @@ public class QuoridorPlayer extends Player {
         validateStartingCoordinates(startingCoordinates);
         validateWallBudget(wallBudget);
 
-        player = new Player(name);
         wallsLeft = wallBudget;
         this.startingCoordinates = startingCoordinates;
     }
