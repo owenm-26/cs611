@@ -3,10 +3,11 @@ package edu.bu.cs611.core;/* Game.java — abstract game loop + shared I/O/quit 
 
 import edu.bu.cs611.core.validator.DimensionValidator;
 
+import java.util.List;
 import java.util.Scanner;
 
 
-public abstract class Game {
+public abstract class Game<T extends Player> {
     //TODO: Add to this enum everytime you add a new "Board" child
     public enum GameType {
         SLIDER,
@@ -19,7 +20,7 @@ public abstract class Game {
     public int turn_count=0;
 
     // Shared players array (1+ players depending on the game)
-    protected Player[] players;
+    protected List<T> players;
 
     public static String RESERVED_QUIT_KEYWORD = "QUIT";
     public static Scanner scanner = new Scanner(System.in);
@@ -30,8 +31,8 @@ public abstract class Game {
         board_height = height;
     }
 
-    protected void setPlayers(Player[] players) { this.players = players; }
-    protected Player[] getPlayers() { return this.players; }
+    protected void setPlayers(List<T> players) { this.players = players; }
+    protected List<T> getPlayers() { return this.players; }
 
     protected String getHowToQuitMessage(){
         return "You can quit anytime by entering 'QUIT' as your input for any question";
@@ -77,6 +78,8 @@ public abstract class Game {
             case DOTS_AND_BOXES:
                 gameName = "Dots and Boxes";
                 break;
+            case QUORIDOR:
+                gameName = "Quoridor";
         }
         welcome(gameName);
         playGame(gameboard);
@@ -105,6 +108,16 @@ public abstract class Game {
     protected abstract boolean checkWin();
 
     protected abstract void endGame();
+
+    protected T getPlayerWhoseTurnItIs(){
+        for(T p: players){
+            if(p.getTurn() == true)
+                return p;
+        }
+        return null;
+    }
+
+    protected abstract void changeTurns();
 
 
 }

@@ -3,31 +3,37 @@ package edu.bu.cs611.dotsandboxes;/* DABGame.java — Dots & Boxes turn logic. *
 import edu.bu.cs611.core.Game;
 import edu.bu.cs611.core.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class DABGame extends Game {
+public class DABGame extends Game<Player> {
     public DABBoard gameboard;
 
-
-    public DABGame(int width, int height, Player[] players){
+    public DABGame(int width, int height, List<Player> players){
         super(width, height);
         gameboard = new DABBoard(width, height);
         this.players = players;
         initializeGame(GameType.DOTS_AND_BOXES, gameboard);  // automatically handles all printing & runs executeNextMove
     }
 
+    @Override
+    protected void changeTurns() {
+        Player p1 = getPlayerWhoseTurnItIs();
+        List<Player> players =  getPlayers();
+        for(Player p: players){
+            if(p == p1){
+                p.setTurn(false);
+            }
+            else{
+                p.setTurn(true);
+            }
+        }
+    }
+
     public void executeNextMove(){
         // ask user for input
-        Player p;
-        Player otherP;
-        if(players[0].getTurn()){
-            p = players[0];
-            otherP = players[1];
-        }
-        else{
-            p = players[1];
-            otherP = players[0];
-        }
+        Player p = getPlayerWhoseTurnItIs();
         int[] coordinates = new int[2];
         HashMap<String, int[]> validConnections;
         String playerUsername = String.format("%s (%s)", p.getName(), p.getInitial());
@@ -93,8 +99,7 @@ public class DABGame extends Game {
         // update boxes & turns
         p.setScore(p.getScore() + squaresCreated);
         if(squaresCreated < 1){
-            p.setTurn(false);
-            otherP.setTurn(true);
+            changeTurns();
         }
     }
 
@@ -107,10 +112,10 @@ public class DABGame extends Game {
         return completedBoxes == (this.board_width-1) * (this.board_height-1);
     }
     public void endGame(){
-        int winnerIndex =  players[0].getScore() > players[1].getScore() ? 0 : 1;
+        int winnerIndex =  players.get(0).getScore() > players.get(1).getScore() ? 0 : 1;
         System.out.println("------- Game Over! -------");
-        System.out.format("🏆 %s wins!!!\n", players[winnerIndex].getName());
-        System.out.format("Final Score:\n%s - %d\n%s - %d\n", players[winnerIndex].getName(), (int)players[winnerIndex].getScore(), players[(winnerIndex+1) % 2].getName(), (int)players[(winnerIndex+1) % 2].getScore());
+        System.out.format("🏆 %s wins!!!\n", players.get(winnerIndex).getName());
+        System.out.format("Final Score:\n%s - %d\n%s - %d\n", players.get(winnerIndex).getName(), (int)players.get(winnerIndex).getScore(), players.get((winnerIndex+1) % 2).getName(), (int)players.get((winnerIndex+1) % 2).getScore());
     }
 
     // TODO: Refactor this into Game class and have it take params like gameName
@@ -119,8 +124,10 @@ public class DABGame extends Game {
         System.out.println("\n--- Dots and Boxes ---");
         // Create two Players and get their name
         Player p1 = new Player("P1");
+        p1.setTurn(true);
         Player p2 = new Player("P2");
-        Player[] players = new Player[] {p1, p2};
+        List<Player> players = new ArrayList<>();
+        players.add(p1); players.add(p2);
         Player.promptMultiplePlayersForNames(players);
 
         System.out.println("Now we'll figure out the dimensions of the board.");

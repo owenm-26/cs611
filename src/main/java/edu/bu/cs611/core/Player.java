@@ -1,6 +1,7 @@
 package edu.bu.cs611.core;/* Player.java — player state (name/score/turn), name input, unique display initial. */
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Player {
@@ -54,10 +55,10 @@ public class Player {
         return "Player{name='" + name + "', score=" + score + ", turn=" + turn + "}";
     }
 
-    public static void promptMultiplePlayersForNames(Player[] players){
+    public static void promptMultiplePlayersForNames(List<Player> players){
         int count = 1;
-        for (int i = 0; i < players.length; i++) {
-            Player p = players[i];
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
 
             while (true) {
                 String m = "What is your name player " + count + "?";
@@ -66,7 +67,7 @@ public class Player {
                 // enforce unique names (case-insensitive)
                 boolean nameTaken = false;
                 for (int j = 0; j < i; j++) {
-                    if (p.getName().equalsIgnoreCase(players[j].getName())) {
+                    if (p.getName().equalsIgnoreCase(players.get(j).getName())) {
                         System.out.println("Name already taken. Please choose another name.");
                         nameTaken = true;
                         break;
@@ -76,7 +77,7 @@ public class Player {
 
                 // assign a unique display initial (first unused letter from their name)
                 Set<Character> used = new HashSet<>();
-                for (int j = 0; j < i; j++) used.add(players[j].getInitial());
+                for (int j = 0; j < i; j++) used.add(players.get(j).getInitial());
 
                 char desired = pickInitialFromName(p.getName(), used);
                 char defaultInitial = Character.toUpperCase(p.getName().trim().charAt(0));
