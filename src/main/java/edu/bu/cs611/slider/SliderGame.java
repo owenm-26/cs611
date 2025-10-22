@@ -3,13 +3,19 @@ package edu.bu.cs611.slider;
 import edu.bu.cs611.core.Game;
 import edu.bu.cs611.core.Player;
 
-public class SliderGame extends Game {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SliderGame extends Game<Player> {
     public SliderBoard gameboard;
 
     public SliderGame(int width, int height, int missing_x, int missing_y, String playerName){
         super(width, height);
-        setPlayers(new Player[]{ new Player(playerName) });
-        players[0].setTurn(true);
+        List<Player> players = new ArrayList<>();
+        Player p1 = new Player(playerName);
+        p1.setTurn(true);
+        players.add(p1);
+        setPlayers(players);
         gameboard = new SliderBoard(board_width, board_height, missing_x, missing_y);
         initializeGame(GameType.SLIDER, gameboard);
     }
@@ -20,7 +26,7 @@ public class SliderGame extends Game {
 
     protected void executeNextMove(){
         String keyToSwapWith = null;
-        String displayName = (players != null && players.length > 0) ? players[0].getName() : "Player";
+        String displayName = (players != null && players.size() > 0) ? players.get(0).getName() : "Player";
         String message = String.format("%s, which tile do you want to slide to the empty space? ", displayName);
 
         // Validate the requested move
@@ -69,7 +75,7 @@ public class SliderGame extends Game {
 
     protected void endGame(){
         String turn = turn_count == 1 ? "turn" : "turns";
-        String displayName = (players != null && players.length > 0) ? players[0].getName() : "Player";
+        String displayName = (players != null && players.size() > 0) ? players.get(0).getName() : "Player";
         String goodGameMessage = String.format("Good game %s. You finished the puzzle in %d %s!\nYou make a decent slider 🍔", displayName, turn_count, turn);
 
         // Ask if they want to play again or quit
@@ -120,5 +126,10 @@ public class SliderGame extends Game {
         int[] dims = SliderGame.getDesiredBoardDimensions(new SliderValidator());
         new SliderGame(dims[0], dims[1], p.getName()); // SliderGame runs its own lifecycle
         System.out.println();
+    }
+
+    @Override
+    protected void changeTurns() {
+        // do nothing because nobody changes turns in 1 player game
     }
 }

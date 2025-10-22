@@ -1,14 +1,13 @@
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Game;
-import sun.misc.Queue;
+import edu.bu.cs611.core.Player;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import static edu.bu.cs611.quoridor.QuoridorBoard.orientationIsHorizontal;
 
-public class QuoridorGame extends Game {
+public class QuoridorGame extends Game<QuoridorPlayer> {
     public QuoridorBoard gameboard;
 
     public QuoridorGame(){
@@ -19,7 +18,16 @@ public class QuoridorGame extends Game {
     @Override
     protected void executeNextMove() {
     //TODO:
-        placeWall(0,0,"L");
+        QuoridorPlayer p = getPlayerWhoseTurnItIs();
+        if(true){
+            if (!p.hasWallToPlace()){
+                System.out.println("Out of walls");
+
+            }
+            else
+                placeWall(0,0,"L");
+        }
+
     }
 
     @Override
@@ -32,6 +40,12 @@ public class QuoridorGame extends Game {
         //TODO:
         return false;
     }
+
+    @Override
+    protected void changeTurns() {
+        //TODO: Round robin style (in case of 4 players)
+    }
+
     public boolean placeWall(int x, int y, String orientation) {
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> coordinates = new HashMap<>();
         try {
@@ -138,14 +152,14 @@ public class QuoridorGame extends Game {
     }
 
     public boolean playerHasPathToGoal(QuoridorPlayer p, int[] currentPos) throws InterruptedException {
-        Queue<int[]> q = new Queue<>();
-        q.enqueue(currentPos);
+        Queue<int[]> q = new LinkedList<>();
+        q.add(currentPos);
         HashSet<int[]> seen = new HashSet<>();
         seen.add(currentPos);
 
         int[] popped = new int[2];
         while(!q.isEmpty()){
-            popped = q.dequeue();
+            popped = q.remove();
             for(String d: QuoridorBoard.KEYS_TO_DIR.keySet()){
                 int[] newSpace = {popped[0] + QuoridorBoard.KEYS_TO_DIR.get(d)[0], popped[1] + QuoridorBoard.KEYS_TO_DIR.get(d)[1]};
                 // skip if position out of bounds
@@ -161,7 +175,7 @@ public class QuoridorGame extends Game {
 
                 // add to queue and seen
                 if(p.isWinningArea(newSpace)) return true;
-                q.enqueue(newSpace);
+                q.add(newSpace);
                 seen.add(newSpace);
 
             }
