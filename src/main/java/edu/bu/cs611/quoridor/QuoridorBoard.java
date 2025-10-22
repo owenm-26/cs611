@@ -2,11 +2,9 @@ package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Board;
 import edu.bu.cs611.core.Tile;
-import sun.misc.Queue;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class QuoridorBoard extends Board<QuoridorPiece> {
@@ -17,7 +15,7 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     
     final static int[][] DIRS = { {-1,0}, {1,0}, {0,-1}, {0,1} };
     final static String[] KEYS = { "U", "D", "L", "R" };
-    private enum HorizontalOrVertical{
+    public enum HorizontalOrVertical{
         HORIZONTAL,
         VERTICAL
     }
@@ -92,15 +90,15 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         return false;
     }
 
-    private void blockHorizontalEdge(int row, int col) {
+    public void setBlockHorizontalEdge(int row, int col, boolean block) {
         if (QuoridorValidator.isValidHorizontalEdge(row, col)) {
-            horizontalEdges[row][col].setBlocked(true);
+            horizontalEdges[row][col].setBlocked(block);
         }
     }
 
-    private void blockVerticalEdge(int row, int col) {
+    public void setBlockVerticalEdge(int row, int col, boolean block) {
         if (QuoridorValidator.isValidVerticalEdge(row, col)) {
-            verticalEdges[row][col].setBlocked(true);
+            verticalEdges[row][col].setBlocked(block);
         }
     }
     
@@ -112,102 +110,14 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         // - Handle diagonal jumps when blocked
         return new HashMap<>();
     }
-    
-    public void movePlayer(QuoridorPlayer player, int toRow, int toCol) {
-        // TODO: Implement player movement
-        // - Get current position
-        // - Remove player from old tile
-        // - Add player to new tile
-        // - Update positions_map
-    }
-    
-    public boolean hasPathToGoal(QuoridorPlayer p, int[] currentPos) throws InterruptedException {
-        Queue<int[]> q = new Queue<>();
-        q.enqueue(currentPos);
-        HashSet<int[]> seen = new HashSet<>();
-        seen.add(currentPos);
 
-        int[] popped = new int[2];
-        while(!q.isEmpty()){
-            popped = q.dequeue();
-            for(String d: QuoridorBoard.KEYS_TO_DIR.keySet()){
-                int[] newSpace = {popped[0] + QuoridorBoard.KEYS_TO_DIR.get(d)[0], popped[1] + QuoridorBoard.KEYS_TO_DIR.get(d)[1]};
-                // skip if position out of bounds
-                if (!QuoridorValidator.isValidPosition(newSpace[0], newSpace[1])) continue;
-                // skip if already explored
-                if (seen.contains(newSpace)) continue;
-
-                // skip if blocked
-                //horizontal
-                if(!orientationIsHorizontal(d) && isVerticalEdgeBlocked(newSpace[0], newSpace[1])) continue;
-                //vertical
-                else if (orientationIsHorizontal(d) && isHorizontalEdgeBlocked(newSpace[0], newSpace[1])) continue;
-
-                // add to queue and seen
-                if(p.isWinningArea(newSpace)) return true;
-                q.enqueue(newSpace);
-                seen.add(newSpace);
-
-            }
-        }
-        return false;
-    }
-
-    public boolean orientationIsHorizontal(String orientation){
+    public static boolean orientationIsHorizontal(String orientation){
         String[] horizontal ={"U", "D"};
         return Arrays.asList(horizontal).contains(orientation);
     }
 
-    private HashMap<HorizontalOrVertical,int[][]> getEdgeCoordinatesFromUserInput(int x, int y, String orientation){
-        /*
-        Helper method that consistently returns what the vertical or horizontal edges that would be blocked
-        would be after a user gives x,y, and orientation
-         */
-        // validate inputs
-        if(!QuoridorValidator.isValidOrientation(orientation))
-            System.out.println(QuoridorValidator.getInvalidOrientationMessage());
-
-        HashMap<HorizontalOrVertical, int[][]> res = new HashMap<>();
-        int[][] coordinates = new int[1][2];
-        switch (orientation){
-            case "U":
-                coordinates[0] = new int[]{x,y};
-                coordinates[1] = new int[]{x,y+1};
-                break;
-            case "D":
-                coordinates[0] = new int[]{x+1,y};
-                coordinates[1] = new int[]{x+1,y+1};
-                break;
-            case "L":
-                coordinates[0] = new int[]{x,y-1};
-                coordinates[1] = new int[]{x-1,y-1};
-                break;
-            case "R":
-                coordinates[0] = new int[]{x,y};
-                coordinates[1] = new int[]{x-1,y};
-                break;
-        }
-
-        // validate edges chosen from user
-        for(int[] edge: coordinates){
-            if (orientationIsHorizontal(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
-                throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
-
-            else if (!orientationIsHorizontal(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
-                throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
-        }
-
-        if(orientationIsHorizontal(orientation)){
-            res.put(HorizontalOrVertical.HORIZONTAL, coordinates);
-        }
-        else{
-            res.put(HorizontalOrVertical.VERTICAL, coordinates);
-        }
-        return res;
-    }
-
-    public boolean wallIsInBoundsAndNonOverlapping(int x, int y, String orientation) {
-        HashMap<HorizontalOrVertical,int[][]> coordinates = getEdgeCoordinatesFromUserInput(x,y,orientation);
+    public boolean wallIsInBoundsAndNonOverlapping( HashMap<HorizontalOrVertical,int[][]> coordinates) {
+//        HashMap<HorizontalOrVertical,int[][]> coordinates = getEdgeCoordinatesFromUserInput(x,y,orientation);
 
         // - Check overlap with existing walls (Check 3-length wall merge)
         for (int[][] cPair: coordinates.values()){
@@ -219,30 +129,6 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
             }
         }
         return true;
-
-//        // - Check path exists for all players (hasPathToGoal)
-//        // -place the walls first
-//        boolean traversable = true;
-//        for (int[][] cPair: coordinates.values()){
-//            for (int[] c: cPair){
-//                if(coordinates.containsKey(HorizontalOrVertical.HORIZONTAL))
-//                    blockHorizontalEdge(c[0], c[1]);
-//                if(coordinates.containsKey(HorizontalOrVertical.VERTICAL))
-//                    blockVerticalEdge(c[0], c[1]);
-//            }
-//        }
-//        // run from all players starting position
-//        for (QuoridorPlayer p: )
-
-        //remove walls
-
-//        return traversable;
-    }
-    
-    public void placeWall(int x, int y, String orientation) {
-        // TODO: Implement wall placement
-        // - Place 2-unit wall in specified orientation
-        // - Call blockHorizontalEdge or blockVerticalEdge
     }
     
     @Override
