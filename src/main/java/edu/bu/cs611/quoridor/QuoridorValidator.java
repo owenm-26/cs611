@@ -8,13 +8,13 @@ public class QuoridorValidator implements DimensionValidator {
         return width == 9 && height == 9;
     }
 
-    public boolean isValidPosition(int x, int y){
+    public static boolean isValidPosition(int x, int y){
         return x > 0 && y > 0 && x <= 9 && y <= 9;
     }
 
     @Override
     public String getInvalidDimensionMessage() {
-        return "Dots and Boxes boards must be 9x9.";
+        return "Quoridor boards must be 9x9.";
     }
 
     public static boolean isValidHorizontalEdge(int row, int col) {
@@ -23,5 +23,17 @@ public class QuoridorValidator implements DimensionValidator {
 
     public static boolean isValidVerticalEdge(int row, int col) {
         return row >= 0 && row < 9 && col >= 0 && col < 8;
+    }
+
+    public static boolean isValidOrientation(String orientation){
+        return QuoridorBoard.KEYS_TO_DIR.containsKey(orientation);
+    }
+
+    public static String getInvalidOrientationMessage() {
+        return "Valid Orientations are only U, D, R, L";
+    }
+
+    public static String getInvalidEdgeDimensionMessage(){
+        return "Invalid Edge Dimension provided";
     }
 }
