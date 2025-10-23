@@ -24,8 +24,7 @@ public class QuoridorPlayer extends Player {
         int x = startingCoordinates[0];
         int y = startingCoordinates[1];
 
-        QuoridorValidator v = new QuoridorValidator();
-        if(!v.isValidPosition(x,y)){
+        if(!QuoridorValidator.isValidPosition(x,y)){
             String m = String.format("Proposed position (%d, %d) is invalid for a quoridor position", x, y);
             throw new IllegalArgumentException(m);
         }
