@@ -3,6 +3,7 @@ package edu.bu.cs611.quoridor;
 import edu.bu.cs611.core.Board;
 import edu.bu.cs611.core.Tile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +81,11 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         return false;
     }
 
+    private boolean isEdgeBlocked(int r1, int c1, int r2, int c2) {
+        if (r1 == r2) return isVerticalEdgeBlocked(r1, Math.min(c1, c2));
+        return isHorizontalEdgeBlocked(Math.min(r1, r2), c1);
+    }
+
     public void setBlockHorizontalEdge(int row, int col, boolean block) {
         if (QuoridorValidator.isValidHorizontalEdge(row, col)) {
             horizontalEdges[row][col].setBlocked(block);
@@ -92,14 +98,60 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         }
     }
     
-    public HashMap<String, int[]> getValidMoves(int row, int col) {
-        // TODO: Implement movement validation
-        // - Check orthogonal neighbors
-        // - Check if edge is blocked by wall
-        // - Handle jumps over opponents
-        // - Handle diagonal jumps when blocked
-        return new HashMap<>();
+    public HashMap<String, int[]> getValidMoves(QuoridorPlayer currentPlayer) {
+        HashMap<String, int[]> validMoves = new HashMap<>();
+        int[] pos = getPlayerPosition(currentPlayer);
+        if (pos == null) return validMoves;
+        
+        for (String dir : KEYS) {
+            int[] offset = KEYS_TO_DIR.get(dir);
+            int newR = pos[0] + offset[0];
+            int newC = pos[1] + offset[1];
+            
+            if (!valid_position(newR, newC) || isEdgeBlocked(pos[0], pos[1], newR, newC)) continue;
+            
+            ArrayList<QuoridorPiece> pieces = board_arr[newR][newC].getPiecesOnTile();
+            
+            // case 1: Simple orthogonal move
+            if (pieces.isEmpty()) {
+                validMoves.put(dir, new int[]{newR, newC});
+            } else {
+            // case 2: jump over opponent
+            // case 3: diagonal jump
+                QuoridorPlayer opp = pieces.get(0).getPlayer();
+                if (opp != null && !opp.equals(currentPlayer)) {
+                    addJumpMoves(validMoves, newR, newC, dir);
+                }
+            }
+        }
+        return validMoves;
     }
+
+    private void addJumpMoves(HashMap<String, int[]> moves, int oppR, int oppC, String dir) {
+        int[] offset = KEYS_TO_DIR.get(dir);
+        int jR = oppR + offset[0];
+        int jC = oppC + offset[1];
+        
+        // case 2
+        if (valid_position(jR, jC) && !isEdgeBlocked(oppR, oppC, jR, jC) && 
+            board_arr[jR][jC].getPiecesOnTile().isEmpty()) {
+            moves.put(dir, new int[]{jR, jC});
+            return;
+        }
+        
+        // case 3
+        String[] perps = dir.equals("U") || dir.equals("D") ? new String[]{"L", "R"} : new String[]{"U", "D"};
+        for (String p : perps) {
+            int[] pOff = KEYS_TO_DIR.get(p);
+            int dR = oppR + pOff[0];
+            int dC = oppC + pOff[1];
+            if (valid_position(dR, dC) && !isEdgeBlocked(oppR, oppC, dR, dC) && 
+                board_arr[dR][dC].getPiecesOnTile().isEmpty()) {
+                moves.put(p, new int[]{dR, dC});
+            }
+        }
+    }
+
 
     public static boolean orientationIsHorizontal(String orientation){
         String[] horizontal ={"U", "D"};
