@@ -79,14 +79,47 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         }
         return traversable;
     }
+
     public void movePlayer(QuoridorPlayer player, int toRow, int toCol) {
-        // TODO: Implement player movement
-        // - Get current position
-        // - Remove player from old tile
-        // - Add player to new tile
-        // - Update positions_map
+        HashMap<String, int[]> validMoves = gameboard.getValidMoves(player);
+        
+        boolean isValidMove = false;
+        for (int[] targetPos : validMoves.values()) {
+            if (targetPos[0] == toRow && targetPos[1] == toCol) {
+                isValidMove = true;
+                break;
+            }
+        }
+        
+        if (!isValidMove) {
+            throw new IllegalArgumentException(
+                String.format("Invalid move: cannot move to (%d, %d)", toRow, toCol)
+            );
+        }
+        
+        int[] currentPos = gameboard.getPlayerPosition(player);
+        if (currentPos == null) {
+            throw new IllegalStateException("Player not found on board");
+        }
+        
+        QuoridorPiece playerPiece = null;
+        for (QuoridorPiece piece : gameboard.board_arr[currentPos[0]][currentPos[1]].getPiecesOnTile()) {
+            if (piece.getPlayer() != null && piece.getPlayer().equals(player)) {
+                playerPiece = piece;
+                break;
+            }
+        }
+        
+        if (playerPiece == null) {
+            throw new IllegalStateException("Player piece not found at current position");
+        }
+        
+        gameboard.board_arr[currentPos[0]][currentPos[1]].removePiece(playerPiece);
+        gameboard.board_arr[toRow][toCol].addPiece(playerPiece);
+        gameboard.positions_map.put(player.toString(), new int[]{toRow, toCol});
     }
 
+    
     public HashMap<QuoridorBoard.HorizontalOrVertical,int[][]> getEdgeCoordinatesFromUserInput(int x, int y, String orientation){
         /*
         Helper method that consistently returns what the vertical or horizontal edges that would be blocked

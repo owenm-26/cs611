@@ -9,7 +9,7 @@ public class QuoridorValidator implements DimensionValidator {
     }
 
     public static boolean isValidPosition(int x, int y){
-        return x > 0 && y > 0 && x <= 9 && y <= 9;
+        return x >= 0 && y >= 0 && x <= 8 && y <= 8; 
     }
 
     @Override
