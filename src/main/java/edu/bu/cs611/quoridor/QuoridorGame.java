@@ -21,7 +21,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
             piece.setPlayer(player);
             int[] pos = player.getStartingCoordinates();
             gameboard.board_arr[pos[0]][pos[1]].addPiece(piece);
-            gameboard.positions_map.put(player.toString(), pos);
+            gameboard.positions_map.put(player.getName(), pos);
         }
         
         initializeGame(GameType.QUORIDOR, gameboard);
@@ -48,6 +48,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
                 System.out.println("Invalid input. Please enter 'M' for Move or 'W' for Wall.");
             }
         }
+        changeTurns();
     }
 
     private boolean handleMove(QuoridorPlayer player) {
@@ -246,7 +247,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         
         gameboard.board_arr[currentPos[0]][currentPos[1]].removePiece(playerPiece);
         gameboard.board_arr[toRow][toCol].addPiece(playerPiece);
-        gameboard.positions_map.put(player.toString(), new int[]{toRow, toCol});
+        gameboard.positions_map.put(player.getName(), new int[]{toRow, toCol});
     }
 
     
@@ -260,7 +261,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
             System.out.println(QuoridorValidator.getInvalidOrientationMessage());
 
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> res = new HashMap<>();
-        int[][] coordinates = new int[1][2];
+        int[][] coordinates = new int[2][2];
         switch (orientation){
             case "U":
                 coordinates[0] = new int[]{x,y};

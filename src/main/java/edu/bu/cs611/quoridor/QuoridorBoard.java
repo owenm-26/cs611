@@ -64,7 +64,7 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     }
     
     private String getPlayerKey(QuoridorPlayer player) {
-        return player.toString();
+        return player.getName();
     }
     
     public boolean isHorizontalEdgeBlocked(int row, int col) {
