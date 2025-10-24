@@ -2,6 +2,7 @@ package edu.bu.cs611.core;/* GameLauncher.java — menu loop and router for game
 
 import edu.bu.cs611.dotsandboxes.DABGame;
 import edu.bu.cs611.slider.SliderGame;
+import edu.bu.cs611.quoridor.QuoridorGame;
 
 import java.util.Scanner;
 
@@ -16,7 +17,8 @@ public final class GameLauncher {
             System.out.println("Select a game:");
             System.out.println("[1] Sliding Puzzle");
             System.out.println("[2] Dots & Boxes");
-            System.out.println("[3] Quit");
+            System.out.println("[3] Quoridor");
+            System.out.println("[4] Quit");
             System.out.print("Enter choice: ");
 
             String s = in.nextLine().trim();
@@ -33,7 +35,8 @@ public final class GameLauncher {
             switch (choice) {
                 case 1: SliderGame.runSlider(); break;
                 case 2: DABGame.runDAB(); break;
-                case 3:
+                case 3: QuoridorGame.runQuoridor(); break;
+                case 4:
                     System.out.println("Goodbye!");
                     return;
                 default:
