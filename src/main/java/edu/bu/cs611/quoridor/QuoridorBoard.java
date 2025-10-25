@@ -6,7 +6,6 @@ import edu.bu.cs611.core.Tile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class QuoridorBoard extends Board<QuoridorPiece> {
     private EdgePiece[][] horizontalEdges;
@@ -81,7 +80,7 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         return false;
     }
 
-    private boolean isEdgeBlocked(int r1, int c1, int r2, int c2) {
+    public boolean isEdgeBlocked(int r1, int c1, int r2, int c2) {
         if (r1 == r2) return isVerticalEdgeBlocked(r1, Math.min(c1, c2));
         return isHorizontalEdgeBlocked(Math.min(r1, r2), c1);
     }

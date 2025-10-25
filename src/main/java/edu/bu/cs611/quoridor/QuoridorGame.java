@@ -115,25 +115,41 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         System.out.println("You have " + player.getWallsLeft() + " walls remaining.");
         
         while (true) {
-            System.out.print("Enter wall coordinates (x y): ");
+            System.out.print("Enter wall coordinates (x y where y is a letter A–I): ");
             String coordInput = scanner.nextLine().trim();
             quitIfRequested(coordInput);
-            
+
             String[] parts = coordInput.split("\\s+");
             if (parts.length != 2) {
-                System.out.println("Invalid format. Please enter two numbers separated by space (e.g., '3 4').");
+                System.out.println("Invalid format. Please enter coordinates like '4 A'.");
                 continue;
             }
-            
+
             int x, y;
             try {
+                // Parse row (first part)
                 x = Integer.parseInt(parts[0]);
-                y = Integer.parseInt(parts[1]);
+                if (x < 0 || x > 8) {
+                    System.out.println("Row must be between 0 and 8.");
+                    continue;
+                }
+
+                // Parse column (second part — letter A–I)
+                String letter = parts[1].toUpperCase();
+                if (letter.length() != 1 || letter.charAt(0) < 'A' || letter.charAt(0) > 'I') {
+                    System.out.println("Column must be a letter between A and I.");
+                    continue;
+                }
+
+                // Convert A–I → 0–8
+                y = letter.charAt(0) - 'A';
+
             } catch (NumberFormatException e) {
-                System.out.println("Invalid coordinates. Please enter numbers between 0-8.");
+                System.out.println("Invalid input. Please enter something like '4 A'.");
                 continue;
             }
-            
+
+
             System.out.print("Enter wall orientation (U/D/L/R): ");
             String orientation = scanner.nextLine().trim().toUpperCase();
             quitIfRequested(orientation);
@@ -199,12 +215,11 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
 
     public boolean placeWall(int x, int y, String orientation) {
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> coordinates = new HashMap<>();
-        try {
+
            coordinates = getEdgeCoordinatesFromUserInput(x,y, orientation);
             if (!gameboard.wallIsInBoundsAndNonOverlapping(coordinates)) return false;
-        }catch(IllegalArgumentException e) {
-            System.out.println(e);
-        }
+
+
         // -place the walls first
         for (int[][] cPair: coordinates.values()){
             for (int[] c: cPair){
@@ -284,12 +299,12 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         int[][] coordinates = new int[2][2];
         switch (orientation){
             case "U":
-                coordinates[0] = new int[]{x,y};
-                coordinates[1] = new int[]{x,y+1};
+                coordinates[0] = new int[]{x-1,y};
+                coordinates[1] = new int[]{x-1,y+1};
                 break;
             case "D":
-                coordinates[0] = new int[]{x+1,y};
-                coordinates[1] = new int[]{x+1,y+1};
+                coordinates[0] = new int[]{x,y};
+                coordinates[1] = new int[]{x,y+1};
                 break;
             case "L":
                 coordinates[0] = new int[]{x,y-1};
@@ -336,29 +351,35 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
     }
 
     public boolean playerHasPathToGoal(QuoridorPlayer p, int[] currentPos) throws InterruptedException {
-        Queue<int[]> q = new LinkedList<>();
-        q.add(currentPos);
-        HashSet<int[]> seen = new HashSet<>();
-        seen.add(currentPos);
+        Queue<Position> q = new LinkedList<>();
 
-        int[] popped = new int[2];
+        HashSet<Position> seen = new HashSet<>();
+        q.add(new Position(currentPos[0], currentPos[1]));
+        seen.add(new Position(currentPos[0], currentPos[1]));
+
+        Position popped;
         while(!q.isEmpty()){
             popped = q.remove();
             for(String d: QuoridorBoard.KEYS_TO_DIR.keySet()){
-                int[] newSpace = {popped[0] + QuoridorBoard.KEYS_TO_DIR.get(d)[0], popped[1] + QuoridorBoard.KEYS_TO_DIR.get(d)[1]};
+
+                Position newSpace = new Position(popped.r + QuoridorBoard.KEYS_TO_DIR.get(d)[0], popped.c + QuoridorBoard.KEYS_TO_DIR.get(d)[1]);
                 // skip if position out of bounds
-                if (!QuoridorValidator.isValidPosition(newSpace[0], newSpace[1])) continue;
+                if (!QuoridorValidator.isValidPosition(newSpace.r, newSpace.c)) continue;
+
+
                 // skip if already explored
                 if (seen.contains(newSpace)) continue;
 
                 // skip if blocked
                 //horizontal
-                if(!orientationIsHorizontal(d) && gameboard.isVerticalEdgeBlocked(newSpace[0], newSpace[1])) continue;
-                    //vertical
-                else if (orientationIsHorizontal(d) && gameboard.isHorizontalEdgeBlocked(newSpace[0], newSpace[1])) continue;
+                if (gameboard.isEdgeBlocked(popped.r, popped.c, newSpace.r, newSpace.c)) continue;
+
+//                if(!orientationIsHorizontal(d) && gameboard.isVerticalEdgeBlocked(newSpace.r, newSpace.c)) continue;
+//                //vertical
+//                else if (orientationIsHorizontal(d) && gameboard.isHorizontalEdgeBlocked(newSpace.r, newSpace.c)) continue;
 
                 // add to queue and seen
-                if(p.isWinningArea(newSpace)) return true;
+                if(p.isWinningArea(new int[]{newSpace.r, newSpace.c})) return true;
                 q.add(newSpace);
                 seen.add(newSpace);
 
