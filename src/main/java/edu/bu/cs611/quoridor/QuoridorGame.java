@@ -284,12 +284,12 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         int[][] coordinates = new int[2][2];
         switch (orientation){
             case "U":
-                coordinates[0] = new int[]{x,y};
-                coordinates[1] = new int[]{x,y+1};
+                coordinates[0] = new int[]{x-1,y};
+                coordinates[1] = new int[]{x-1,y+1};
                 break;
             case "D":
-                coordinates[0] = new int[]{x+1,y};
-                coordinates[1] = new int[]{x+1,y+1};
+                coordinates[0] = new int[]{x,y};
+                coordinates[1] = new int[]{x,y+1};
                 break;
             case "L":
                 coordinates[0] = new int[]{x,y-1};
