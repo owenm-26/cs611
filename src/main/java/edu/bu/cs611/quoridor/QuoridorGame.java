@@ -86,7 +86,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         System.out.println();
         
         while (true) {
-            System.out.print("Enter direction (U/D/L/R): ");
+            System.out.print("Enter direction (U/D/L/R or UL/UR/DL/DR for diagonal): ");
             String direction = scanner.nextLine().trim().toUpperCase();
             quitIfRequested(direction);
             
@@ -292,8 +292,9 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         would be after a user gives x,y, and orientation
          */
         // validate inputs
-        if(!QuoridorValidator.isValidOrientation(orientation))
-            System.out.println(QuoridorValidator.getInvalidOrientationMessage());
+        if(!QuoridorValidator.isValidOrientation(orientation)) {
+            throw new IllegalArgumentException(QuoridorValidator.getInvalidOrientationMessage());  
+        }
 
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> res = new HashMap<>();
         int[][] coordinates = new int[2][2];
@@ -321,7 +322,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
             if (orientationIsHorizontal(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
                 throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
 
-            else if (!orientationIsHorizontal(orientation) && !QuoridorValidator.isValidHorizontalEdge(edge[0],edge[1]))
+            else if (!orientationIsHorizontal(orientation) && !QuoridorValidator.isValidVerticalEdge(edge[0],edge[1]))
                 throw new IllegalArgumentException(QuoridorValidator.getInvalidEdgeDimensionMessage());
         }
 

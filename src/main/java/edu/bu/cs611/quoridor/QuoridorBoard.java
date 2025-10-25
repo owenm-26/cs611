@@ -131,14 +131,14 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         int jR = oppR + offset[0];
         int jC = oppC + offset[1];
         
-        // case 2
+        // Case 2: Straight jump over opponent
         if (valid_position(jR, jC) && !isEdgeBlocked(oppR, oppC, jR, jC) && 
             board_arr[jR][jC].getPiecesOnTile().isEmpty()) {
             moves.put(dir, new int[]{jR, jC});
             return;
         }
         
-        // case 3
+        // Case 3: Diagonal jump (blocked behind opponent)
         String[] perps = dir.equals("U") || dir.equals("D") ? new String[]{"L", "R"} : new String[]{"U", "D"};
         for (String p : perps) {
             int[] pOff = KEYS_TO_DIR.get(p);
@@ -146,7 +146,10 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
             int dC = oppC + pOff[1];
             if (valid_position(dR, dC) && !isEdgeBlocked(oppR, oppC, dR, dC) && 
                 board_arr[dR][dC].getPiecesOnTile().isEmpty()) {
-                moves.put(p, new int[]{dR, dC});
+                
+                // Create diagonal key: combine original direction with perpendicular
+                String diagonalKey = dir + p;  // e.g., "UL", "UR", "DL", "DR"
+                moves.put(diagonalKey, new int[]{dR, dC});
             }
         }
     }
