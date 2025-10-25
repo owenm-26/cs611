@@ -1,5 +1,6 @@
 package edu.bu.cs611.quoridor;
 
+import edu.bu.cs611.core.Board;
 import edu.bu.cs611.core.Game;
 import edu.bu.cs611.core.Player;
 
@@ -48,7 +49,26 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
                 System.out.println("Invalid input. Please enter 'M' for Move or 'W' for Wall.");
             }
         }
-        changeTurns();
+
+    }
+
+    @Override
+    protected void playGame(Board gameboard) {
+        turn_count = 0;
+        boolean has_won = false;
+        gameboard.printCurrentBoard();
+        
+        while (!has_won) {
+            executeNextMove();
+            gameboard.printCurrentBoard();
+            has_won = checkWin();
+            
+            if (!has_won) {
+                changeTurns();  // Only change turns if nobody won
+            }
+        }
+        
+        endGame();
     }
 
     private boolean handleMove(QuoridorPlayer player) {
