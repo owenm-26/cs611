@@ -199,12 +199,11 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
 
     public boolean placeWall(int x, int y, String orientation) {
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> coordinates = new HashMap<>();
-        try {
+
            coordinates = getEdgeCoordinatesFromUserInput(x,y, orientation);
             if (!gameboard.wallIsInBoundsAndNonOverlapping(coordinates)) return false;
-        }catch(IllegalArgumentException e) {
-            System.out.println(e);
-        }
+
+
         // -place the walls first
         for (int[][] cPair: coordinates.values()){
             for (int[] c: cPair){
