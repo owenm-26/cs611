@@ -166,12 +166,21 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         // - Check overlap with existing walls (Check 3-length wall merge)
         for (int[][] cPair: coordinates.values()){
             for (int[] c: cPair){
+                System.out.println("[" + c[0]+ " " + c[1] + "]");
                 if(coordinates.containsKey(HorizontalOrVertical.HORIZONTAL) && isHorizontalEdgeBlocked(c[0],c[1]))
                     return false;
                 if(coordinates.containsKey(HorizontalOrVertical.VERTICAL) && isVerticalEdgeBlocked(c[0],c[1]))
                     return false;
             }
         }
+
+        // Make sure the new wall doesn't bisect an existing one
+        int[] c1 = coordinates.containsKey(HorizontalOrVertical.HORIZONTAL) ? coordinates.get(HorizontalOrVertical.HORIZONTAL)[0] : coordinates.get(HorizontalOrVertical.VERTICAL)[0];
+        int[] c2 = coordinates.containsKey(HorizontalOrVertical.HORIZONTAL) ? coordinates.get(HorizontalOrVertical.HORIZONTAL)[1] : coordinates.get(HorizontalOrVertical.VERTICAL)[1];
+
+//        System.out.format("Checking if edge between [%d, %d] and [%d, %d] is blocked: %b\n", c1[0], c1[1], c2[0], c2[1], isEdgeBlocked(c1[0], c1[1], c2[0], c2[1]));
+        if (isEdgeBlocked(c1[0], c1[1], c2[0], c2[1])) return false;
+
         return true;
     }
 
@@ -224,11 +233,12 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
             // Horizontal walls or bottom structure
             if (r < height - 1) {
                 System.out.print("   +");
-                for (int c = 0; c < width - 1; c++) {
+                for (int c = 0; c < width; c++) {
                     if (isHorizontalEdgeBlocked(r, c)) System.out.print("---+");
                     else System.out.print("   +");
                 }
-                System.out.println("   +");
+                  System.out.println("");
+
             }
         }
 
