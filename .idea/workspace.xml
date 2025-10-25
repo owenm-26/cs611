@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a50df29-3ccf-4431-b8a1-ded43b0e7fbe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/bu/cs611/quoridor/QuoridorGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/bu/cs611/quoridor/QuoridorGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/quoridor-game-documentation/DESIGN.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/quoridor-game-documentation/UML-diagram.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/quoridor-game-documentation/io_example.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
