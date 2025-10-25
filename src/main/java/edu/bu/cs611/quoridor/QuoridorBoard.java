@@ -64,7 +64,7 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
     }
     
     private String getPlayerKey(QuoridorPlayer player) {
-        return player.toString();
+        return player.getName();
     }
     
     public boolean isHorizontalEdgeBlocked(int row, int col) {
@@ -172,13 +172,81 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
         }
         return true;
     }
-    
+
     @Override
     public void printCurrentBoard() {
-        // TODO: Implement board visualization
-        System.out.println("Board visualization not yet implemented");
+        // Column headers (A, B, C, ...)
+        System.out.print("   ");
+        for (int c = 0; c < width; c++) {
+            System.out.print("  " + (char) ('A' + c) + " ");
+        }
+        System.out.println();
+
+        // Top % border
+        System.out.print("   ");
+        for (int i = 0; i < width * 4 + 1; i++) {
+            System.out.print("%");
+        }
+        System.out.println();
+
+        for (int r = 0; r < height; r++) {
+            // Row number and left border
+            System.out.printf("%2d |", r);
+
+            // Print each tile and vertical walls
+            for (int c = 0; c < width; c++) {
+                ArrayList<QuoridorPiece> pieces = board_arr[r][c].getPiecesOnTile();
+                char pieceSymbol = ' ';
+                if (!pieces.isEmpty()) {
+                    QuoridorPiece p = pieces.get(0);
+                    if (p != null && p.getPlayer() != null) {
+                        pieceSymbol = p.getPlayer().getInitial();
+                    } else {
+                        pieceSymbol = 'O';
+                    }
+                }
+
+                // Tile contents
+                System.out.print(" " + pieceSymbol + " ");
+
+                // Vertical edge or right border
+                if (c < width - 1) {
+                    if (isVerticalEdgeBlocked(r, c)) System.out.print("|");
+                    else System.out.print(" ");
+                } else {
+                    System.out.print("|");
+                }
+            }
+            System.out.println();
+
+            // Horizontal walls or bottom structure
+            if (r < height - 1) {
+                System.out.print("   +");
+                for (int c = 0; c < width - 1; c++) {
+                    if (isHorizontalEdgeBlocked(r, c)) System.out.print("---+");
+                    else System.out.print("   +");
+                }
+                System.out.println("   +");
+            }
+        }
+
+        // Bottom % border
+        System.out.print("   ");
+        for (int i = 0; i < width * 4 + 1; i++) {
+            System.out.print("%");
+        }
+        System.out.println();
+
+        // Footer coordinate labels
+        System.out.print("   ");
+        for (int c = 0; c < width; c++) {
+            System.out.print("  " + (char) ('A' + c) + " ");
+        }
+        System.out.println("\n");
     }
-    
+
+
+
     @Override
     protected boolean isValidDimension(int w, int h) {
         QuoridorValidator validator = new QuoridorValidator();

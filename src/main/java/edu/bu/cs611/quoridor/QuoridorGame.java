@@ -1,5 +1,6 @@
 package edu.bu.cs611.quoridor;
 
+import edu.bu.cs611.core.Board;
 import edu.bu.cs611.core.Game;
 import edu.bu.cs611.core.Player;
 
@@ -10,40 +11,190 @@ import static edu.bu.cs611.quoridor.QuoridorBoard.orientationIsHorizontal;
 public class QuoridorGame extends Game<QuoridorPlayer> {
     public QuoridorBoard gameboard;
 
-    public QuoridorGame(){
+    public QuoridorGame(List<QuoridorPlayer> players) {
         super(QuoridorBoard.DEFAULT_SIZE, QuoridorBoard.DEFAULT_SIZE);
         gameboard = new QuoridorBoard();
-
+        this.players = players;
+        
+        // Place pieces on board at starting positions
+        for (QuoridorPlayer player : players) {
+            QuoridorPiece piece = new QuoridorPiece();
+            piece.setPlayer(player);
+            int[] pos = player.getStartingCoordinates();
+            gameboard.board_arr[pos[0]][pos[1]].addPiece(piece);
+            gameboard.positions_map.put(player.getName(), pos);
+        }
+        
+        initializeGame(GameType.QUORIDOR, gameboard);
     }
+
     @Override
     protected void executeNextMove() {
-    //TODO:
-        QuoridorPlayer p = getPlayerWhoseTurnItIs();
-        if(true){
-            if (!p.hasWallToPlace()){
-                System.out.println("Out of walls");
-
+        QuoridorPlayer currentPlayer = getPlayerWhoseTurnItIs();
+        if (currentPlayer == null) return;
+        
+        System.out.println("\n" + currentPlayer.getName() + "'s turn");
+        
+        boolean actionSuccessful = false;
+        while (!actionSuccessful) {
+            System.out.print("Move (M) or Place Wall (W)? ");
+            String action = scanner.nextLine().trim().toUpperCase();
+            quitIfRequested(action);
+            
+            if (action.equals("M")) {
+                actionSuccessful = handleMove(currentPlayer);
+            } else if (action.equals("W")) {
+                actionSuccessful = handleWall(currentPlayer);
+            } else {
+                System.out.println("Invalid input. Please enter 'M' for Move or 'W' for Wall.");
             }
-            else
-                placeWall(0,0,"L");
         }
 
     }
 
     @Override
+    protected void playGame(Board gameboard) {
+        turn_count = 0;
+        boolean has_won = false;
+        gameboard.printCurrentBoard();
+        
+        while (!has_won) {
+            executeNextMove();
+            gameboard.printCurrentBoard();
+            has_won = checkWin();
+            
+            if (!has_won) {
+                changeTurns();  // Only change turns if nobody won
+            }
+        }
+        
+        endGame();
+    }
+
+    private boolean handleMove(QuoridorPlayer player) {
+        HashMap<String, int[]> validMoves = gameboard.getValidMoves(player);
+        
+        if (validMoves.isEmpty()) {
+            System.out.println("No valid moves available. Game over.");
+            return true;
+        }
+        
+        System.out.print("Valid moves: ");
+        for (String dir : validMoves.keySet()) {
+            System.out.print(dir + " ");
+        }
+        System.out.println();
+        
+        while (true) {
+            System.out.print("Enter direction (U/D/L/R): ");
+            String direction = scanner.nextLine().trim().toUpperCase();
+            quitIfRequested(direction);
+            
+            if (!validMoves.containsKey(direction)) {
+                System.out.println("Invalid direction '" + direction + "'. Valid moves are: " + validMoves.keySet());
+                continue;
+            }
+            
+            try {
+                int[] targetPos = validMoves.get(direction);
+                movePlayer(player, targetPos[0], targetPos[1]);
+                System.out.println("Move successful!");
+                return true;
+            } catch (Exception e) {
+                System.out.println("Move failed: " + e.getMessage());
+            }
+        }
+    }
+
+    private boolean handleWall(QuoridorPlayer player) {
+        if (!player.hasWallToPlace()) {
+            System.out.println("You have no walls remaining. Please choose to move instead.");
+            return false;
+        }
+        
+        System.out.println("You have " + player.getWallsLeft() + " walls remaining.");
+        
+        while (true) {
+            System.out.print("Enter wall coordinates (x y): ");
+            String coordInput = scanner.nextLine().trim();
+            quitIfRequested(coordInput);
+            
+            String[] parts = coordInput.split("\\s+");
+            if (parts.length != 2) {
+                System.out.println("Invalid format. Please enter two numbers separated by space (e.g., '3 4').");
+                continue;
+            }
+            
+            int x, y;
+            try {
+                x = Integer.parseInt(parts[0]);
+                y = Integer.parseInt(parts[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid coordinates. Please enter numbers between 0-8.");
+                continue;
+            }
+            
+            System.out.print("Enter wall orientation (U/D/L/R): ");
+            String orientation = scanner.nextLine().trim().toUpperCase();
+            quitIfRequested(orientation);
+            
+            try {
+                boolean success = placeWall(x, y, orientation);
+                if (success) {
+                    player.decrementWallsLeft();
+                    System.out.println("Wall placed successfully!");
+                    return true;
+                } else {
+                    System.out.println("Wall placement failed: would block a player's path to goal or overlaps with existing wall.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid wall placement: " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
     protected void endGame() {
-        //TODO:
+        QuoridorPlayer winner = getPlayerWhoseTurnItIs();
+        
+        System.out.println("\n------- Game Over! -------");
+        System.out.println("🏆 " + winner.getName() + " wins!!!");
+        System.out.println("\nFinal Statistics:");
+        System.out.println(winner.getName() + " - Walls remaining: " + winner.getWallsLeft());
+        
+        System.out.println("\nAll Players:");
+        for (QuoridorPlayer p : players) {
+            System.out.println(p.getName() + " - Walls remaining: " + p.getWallsLeft());
+        }
+        
+        System.out.println("\nThank you for playing Quoridor!");
     }
 
     @Override
     protected boolean checkWin() {
-        //TODO:
-        return false;
+        QuoridorPlayer currentPlayer = getPlayerWhoseTurnItIs();
+        if (currentPlayer == null) return false;
+        
+        int[] currentPos = gameboard.getPlayerPosition(currentPlayer);
+        if (currentPos == null) return false;
+        
+        return currentPlayer.isWinningArea(currentPos);
     }
 
     @Override
     protected void changeTurns() {
-        //TODO: Round robin style (in case of 4 players)
+        QuoridorPlayer currentPlayer = getPlayerWhoseTurnItIs();
+        
+        if (currentPlayer != null) {
+            currentPlayer.setTurn(false);
+        }
+        
+        // find current player's index
+        int currentIndex = players.indexOf(currentPlayer);
+        
+        // Get next player (round-robin with wraparound)
+        int nextIndex = (currentIndex + 1) % players.size();
+        players.get(nextIndex).setTurn(true);
     }
 
     public boolean placeWall(int x, int y, String orientation) {
@@ -116,7 +267,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
         
         gameboard.board_arr[currentPos[0]][currentPos[1]].removePiece(playerPiece);
         gameboard.board_arr[toRow][toCol].addPiece(playerPiece);
-        gameboard.positions_map.put(player.toString(), new int[]{toRow, toCol});
+        gameboard.positions_map.put(player.getName(), new int[]{toRow, toCol});
     }
 
     
@@ -130,7 +281,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
             System.out.println(QuoridorValidator.getInvalidOrientationMessage());
 
         HashMap<QuoridorBoard.HorizontalOrVertical, int[][]> res = new HashMap<>();
-        int[][] coordinates = new int[1][2];
+        int[][] coordinates = new int[2][2];
         switch (orientation){
             case "U":
                 coordinates[0] = new int[]{x,y};
@@ -214,6 +365,74 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
             }
         }
         return false;
+    }
+
+    public static void runQuoridor() {
+        System.out.println("\n--- Quoridor ---");
+        
+        // Get number of players
+        int numPlayers = getNumberOfPlayers();
+        
+        // Calculate wall budget
+        int wallBudget = 20 / numPlayers;
+        
+        // Define starting positions
+        int[][] startingPositions = getStartingPositions(numPlayers);
+        
+        // Create players
+        List<QuoridorPlayer> players = new ArrayList<>();
+        for (int i = 0; i < numPlayers; i++) {
+            QuoridorPlayer p = new QuoridorPlayer("Player" + (i+1), wallBudget, startingPositions[i]);
+            if (i == 0) p.setTurn(true);
+            players.add(p);
+        }
+        
+        // Get player names - need to convert to List<Player>
+        List<Player> playerList = new ArrayList<>(players);
+        Player.promptMultiplePlayersForNames(playerList);
+        
+        // Start game
+        new QuoridorGame(players);
+        System.out.println();
+    }
+
+    private static int getNumberOfPlayers() {
+        while (true) {
+            System.out.print("How many players? (2 or 4): ");
+            String input = Game.scanner.nextLine().trim();
+            
+            if (input.equals(Game.RESERVED_QUIT_KEYWORD)) {
+                System.out.println("User triggered a quit. Closing game.");
+                System.exit(0);
+            }
+            
+            try {
+                int num = Integer.parseInt(input);
+                if (num == 2 || num == 4) {
+                    return num;
+                } else {
+                    System.out.println("Invalid number. Please enter 2 or 4.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number (2 or 4).");
+            }
+        }
+    }
+
+    private static int[][] getStartingPositions(int numPlayers) {
+        if (numPlayers == 2) {
+            return new int[][]{
+                {0, 4},  // Top center
+                {8, 4}   // Bottom center
+            };
+        } else {  // 4 players
+            return new int[][]{
+                {0, 4},  // Top center
+                {8, 4},  // Bottom center
+                {4, 0},  // Left center
+                {4, 8}   // Right center
+            };
+        }
     }
 
 }
