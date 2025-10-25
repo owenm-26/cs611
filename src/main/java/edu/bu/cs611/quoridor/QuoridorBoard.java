@@ -169,6 +169,12 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
                     return false;
             }
         }
+
+        // Make sure the new wall doesn't bisect an existing one
+        int[][] c = coordinates.containsKey(HorizontalOrVertical.HORIZONTAL) ? coordinates.get(HorizontalOrVertical.HORIZONTAL) : coordinates.get(HorizontalOrVertical.VERTICAL);
+        if(coordinates.containsKey(HorizontalOrVertical.HORIZONTAL) && isVerticalEdgeBlocked(c[0][0] +1, c[0][1] + 1)) return false;
+        if(coordinates.containsKey(HorizontalOrVertical.VERTICAL) && isHorizontalEdgeBlocked(c[0][0] -1, c[0][1] - 1)) return false;
+
         return true;
     }
 
@@ -221,11 +227,12 @@ public class QuoridorBoard extends Board<QuoridorPiece> {
             // Horizontal walls or bottom structure
             if (r < height - 1) {
                 System.out.print("   +");
-                for (int c = 0; c < width - 1; c++) {
+                for (int c = 0; c < width; c++) {
                     if (isHorizontalEdgeBlocked(r, c)) System.out.print("---+");
                     else System.out.print("   +");
                 }
-                System.out.println("   +");
+                  System.out.println("");
+
             }
         }
 
