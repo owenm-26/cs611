@@ -391,6 +391,7 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
 
     public static void runQuoridor() {
         System.out.println("\n--- Quoridor ---");
+        printInstructions();
         
         // Get number of players
         int numPlayers = getNumberOfPlayers();
@@ -455,6 +456,12 @@ public class QuoridorGame extends Game<QuoridorPlayer> {
                 {4, 8}   // Right center
             };
         }
+    }
+
+    private static void printInstructions(){
+        System.out.println("***********************************************");
+        System.out.println("The objective of this game is to get to the opposite side of the board from where you start before your opponent(s) does by moving towards the goal area and placing walls to block them.\n\nWhen placing walls you will select the tile you seek to have your wall originate from and then you will select the left, right, top (up), or bottom(down) or the tile. Each wall is of length 2 and will always extend further in the positive direction (grid-wise) from where you start it. You cannot block an opponent from their objective entirely but you can make it more difficult to reach it!");
+        System.out.println("***********************************************");
     }
 
 }
