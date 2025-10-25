@@ -1,3 +1,5 @@
+/* QuoridorGame.java - Game loop for Quoridor: handles turns, move/wall input, win detection.
+ * Manages player initialization, pathfinding validation, and game flow for 2-4 players. */
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Board;

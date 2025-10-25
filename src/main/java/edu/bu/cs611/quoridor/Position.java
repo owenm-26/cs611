@@ -1,3 +1,5 @@
+/* Position.java - Immutable coordinate pair (row, col) with proper equals/hashCode.
+ * Used for position tracking and Set/Map operations in pathfinding. */
 package edu.bu.cs611.quoridor;
 
 import java.util.Objects;

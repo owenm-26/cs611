@@ -1,3 +1,5 @@
+/* QuoridorPlayer.java - Extends Player with Quoridor-specific data: walls remaining,
+ * starting coordinates, and win condition logic based on reaching opposite edge. */
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Player;

@@ -1,3 +1,5 @@
+/* QuoridorValidator.java - Validates board dimensions (9x9), position coordinates,
+ * edge array indices, and wall orientation inputs. */
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.validator.DimensionValidator;

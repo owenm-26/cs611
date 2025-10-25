@@ -1,3 +1,5 @@
+/* QuoridorPiece.java - Represents a player's pawn on the Quoridor board.
+ * Holds reference to the QuoridorPlayer who owns this piece. */
 package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Piece;

@@ -1,4 +1,6 @@
-package edu.bu.cs611.quoridor;
+/* QuoridorBoard.java - 9x9 board with player movement, wall placement, and jump validation.
+ * Manages vertex grid, horizontal/vertical edge arrays, and validates legal moves/walls. */
+ package edu.bu.cs611.quoridor;
 
 import edu.bu.cs611.core.Board;
 import edu.bu.cs611.core.Tile;
